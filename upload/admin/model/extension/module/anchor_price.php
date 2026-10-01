@@ -1194,7 +1194,7 @@ class ModelExtensionModuleAnchorPrice extends Model {
 	private function getPublicationProducts($store_id) {
 		$language_id = $this->getCatalogLanguageId();
 		$customer_group_id = (int)$this->config->get('config_customer_group_id');
-		$sql = "SELECT p.product_id, p.model, p.sku, p.ean, p.quantity, p.stock_status_id, p.tax_class_id, p.manufacturer_id, p.price AS regular_price, pd.name AS product_name, COALESCE(m.name, '') AS manufacturer, COALESCE(ss.name, '') AS stock_status, ap.anchor_price_id, ap.verification_status, ap.gross_price AS anchor_gross_price, ap.reference_date, ap.currency_code, (SELECT pdsc.price FROM `" . DB_PREFIX . "product_discount` pdsc WHERE pdsc.product_id = p.product_id AND pdsc.customer_group_id = '" . $customer_group_id . "' AND pdsc.quantity = '1' AND (pdsc.date_start = '0000-00-00' OR pdsc.date_start < NOW()) AND (pdsc.date_end = '0000-00-00' OR pdsc.date_end > NOW()) ORDER BY pdsc.priority ASC, pdsc.price ASC LIMIT 1) AS discount_price, (SELECT ps.price FROM `" . DB_PREFIX . "product_special` ps WHERE ps.product_id = p.product_id AND ps.customer_group_id = '" . $customer_group_id . "' AND (ps.date_start = '0000-00-00' OR ps.date_start < NOW()) AND (ps.date_end = '0000-00-00' OR ps.date_end > NOW()) ORDER BY ps.priority ASC, ps.price ASC LIMIT 1) AS special_price FROM `" . DB_PREFIX . "product` p INNER JOIN `" . DB_PREFIX . "product_to_store` p2s ON (p2s.product_id = p.product_id AND p2s.store_id = '" . (int)$store_id . "') LEFT JOIN `" . DB_PREFIX . "product_description` pd ON (pd.product_id = p.product_id AND pd.language_id = '" . (int)$language_id . "') LEFT JOIN `" . DB_PREFIX . "anchor_price` ap ON (ap.product_id = p.product_id AND ap.store_id = '" . (int)$store_id . "') LEFT JOIN `" . DB_PREFIX . "manufacturer` m ON (m.manufacturer_id = p.manufacturer_id) LEFT JOIN `" . DB_PREFIX . "stock_status` ss ON (ss.stock_status_id = p.stock_status_id AND ss.language_id = '" . (int)$language_id . "') WHERE p.status = '1' AND p.date_available <= NOW() ORDER BY p.product_id ASC";
+		$sql = "SELECT p.product_id, p.model, p.sku, p.ean, p.quantity, p.stock_status_id, p.tax_class_id, p.manufacturer_id, p.price AS regular_price, pd.name AS product_name, COALESCE(m.name, '') AS manufacturer, COALESCE(ss.name, '') AS stock_status, ap.anchor_price_id, ap.verification_status, ap.gross_price AS anchor_gross_price, ap.reference_date, ap.currency_code, (SELECT pdsc.price FROM `" . DB_PREFIX . "product_discount` pdsc WHERE pdsc.product_id = p.product_id AND pdsc.customer_group_id = '" . $customer_group_id . "' AND pdsc.quantity = '1' AND (pdsc.date_start = '0000-00-00' OR pdsc.date_start < NOW()) AND (pdsc.date_end = '0000-00-00' OR pdsc.date_end > NOW()) ORDER BY pdsc.priority ASC, pdsc.price ASC LIMIT 1) AS discount_price, (SELECT ps.price FROM `" . DB_PREFIX . "product_special` ps WHERE ps.product_id = p.product_id AND ps.customer_group_id = '" . $customer_group_id . "' AND (ps.date_start = '0000-00-00' OR ps.date_start < NOW()) AND (ps.date_end = '0000-00-00' OR ps.date_end > NOW()) ORDER BY ps.priority ASC, ps.price ASC LIMIT 1) AS special_price FROM `" . DB_PREFIX . "product` p INNER JOIN `" . DB_PREFIX . "product_to_store` p2s ON (p2s.product_id = p.product_id AND p2s.store_id = '" . (int)$store_id . "') LEFT JOIN `" . DB_PREFIX . "product_description` pd ON (pd.product_id = p.product_id AND pd.language_id = '" . (int)$language_id . "') LEFT JOIN `" . DB_PREFIX . "anchor_price` ap ON (ap.product_id = p.product_id AND ap.store_id = '" . (int)$store_id . "') LEFT JOIN `" . DB_PREFIX . "manufacturer` m ON (m.manufacturer_id = p.manufacturer_id) LEFT JOIN `" . DB_PREFIX . "stock_status` ss ON (ss.stock_status_id = p.stock_status_id AND ss.language_id = '" . (int)$language_id . "') WHERE p.status = '1' AND p.price > '0' AND p.date_available <= NOW() ORDER BY p.product_id ASC";
 		$rows = $this->db->query($sql)->rows;
 		$fallback_manufacturer = '';
 
@@ -1213,13 +1213,12 @@ class ModelExtensionModuleAnchorPrice extends Model {
 		foreach ($products as $product) {
 			if (empty($product['anchor_price_id'])
 				|| $product['verification_status'] !== 'confirmed'
-				|| trim((string)$product['product_name']) === ''
-				|| trim((string)$product['model']) === '') {
+				|| trim((string)$product['product_name']) === '') {
 				$total++;
 			}
 		}
 		if ($total > 0) {
-			throw new Exception($total . ' aktivnih proizvoda nema potvrđenu sidrenu cijenu, naziv ili šifru. Objava je zaustavljena.');
+			throw new Exception($total . ' proizvoda s istaknutom cijenom nema potvrđenu sidrenu cijenu ili naziv. Objava je zaustavljena.');
 		}
 	}
 
