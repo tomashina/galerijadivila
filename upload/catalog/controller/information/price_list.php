@@ -6,6 +6,7 @@ class ControllerInformationPriceList extends Controller {
 		}
 
 		$this->load->language('information/price_list');
+		$this->loadCroatianLanguageFallback();
 		$this->load->model('extension/module/anchor_price');
 
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -87,6 +88,22 @@ class ControllerInformationPriceList extends Controller {
 		$this->response->addHeader('Content-Length: ' . filesize($path));
 		$this->response->addHeader('X-Content-Type-Options: nosniff');
 		$this->response->setOutput(file_get_contents($path));
+	}
+
+	private function loadCroatianLanguageFallback() {
+		$language_code = !empty($this->session->data['language'])
+			? (string)$this->session->data['language']
+			: (string)$this->config->get('config_language');
+		$language_code = strtolower(str_replace('_', '-', $language_code));
+
+		if ($language_code === 'hr' || $language_code === 'hr-hr') {
+			$language = new Language('hr-HR');
+			$translations = $language->load('information/price_list');
+
+			foreach ($translations as $key => $value) {
+				$this->language->set($key, $value);
+			}
+		}
 	}
 
 	private function notFound() {

@@ -6,6 +6,11 @@ class ControllerCommonFooter extends Controller {
 		$this->load->model('catalog/information');
 
 		$data['informations'] = array();
+		$language_code = !empty($this->session->data['language'])
+			? (string)$this->session->data['language']
+			: (string)$this->config->get('config_language');
+		$language_code = strtolower(str_replace('_', '-', $language_code));
+		$is_croatian = $language_code === 'hr' || $language_code === 'hr-hr';
 
 		foreach ($this->model_catalog_information->getInformations() as $result) {
 			if ($result['bottom']) {
@@ -19,7 +24,7 @@ class ControllerCommonFooter extends Controller {
 		$data['anchor_price_list'] = false;
 		if ($this->config->get('module_anchor_price_status')) {
 			$data['anchor_price_list'] = array(
-				'title' => (strpos((string)$this->config->get('config_language'), 'hr') === 0 ? 'Cjenici' : 'Price lists'),
+				'title' => $is_croatian ? 'Cjenici' : 'Price lists',
 				'href'  => $this->url->link('information/price_list')
 			);
 			$data['informations'][] = $data['anchor_price_list'];
@@ -28,7 +33,7 @@ class ControllerCommonFooter extends Controller {
 		$data['contact'] = $this->url->link('information/contact');
 		$data['return'] = $this->url->link('account/return/add', '', true);
 		$data['contract_withdrawal'] = $this->url->link('extension/account/contract_withdrawal', '', true);
-		$data['text_contract_withdrawal_title'] = strpos((string)$this->config->get('config_language'), 'hr') === 0 ? 'Raskid ugovora' : 'Contract withdrawal';
+		$data['text_contract_withdrawal_title'] = $is_croatian ? 'Raskid ugovora' : 'Contract withdrawal';
 		$data['informations'][] = array(
 			'title' => $data['text_contract_withdrawal_title'],
 			'href'  => $data['contract_withdrawal']

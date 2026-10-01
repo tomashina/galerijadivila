@@ -518,9 +518,12 @@ class ControllerExtensionAccountContractWithdrawal extends Controller {
 	}
 
 	private function loadCroatianLanguageFallback() {
-		$language_code = (string)$this->config->get('config_language');
+		$language_code = !empty($this->session->data['language'])
+			? (string)$this->session->data['language']
+			: (string)$this->config->get('config_language');
+		$language_code = strtolower(str_replace('_', '-', $language_code));
 
-		if (strtolower($language_code) === 'hr-hr' && $language_code !== 'hr-HR') {
+		if ($language_code === 'hr' || $language_code === 'hr-hr') {
 			$language = new Language('hr-HR');
 			$translations = $language->load('extension/account/contract_withdrawal');
 

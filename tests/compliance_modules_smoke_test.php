@@ -20,6 +20,8 @@ $root = dirname(__DIR__);
 $admin_anchor = $root . '/upload/admin/model/extension/module/anchor_price.php';
 $catalog_anchor = $root . '/upload/catalog/model/extension/module/anchor_price.php';
 $anchor_controller = $root . '/upload/admin/controller/extension/module/anchor_price.php';
+$price_list_controller = $root . '/upload/catalog/controller/information/price_list.php';
+$footer_controller = $root . '/upload/catalog/controller/common/footer.php';
 $withdrawal_controller = $root . '/upload/catalog/controller/extension/account/contract_withdrawal.php';
 $withdrawal_model = $root . '/upload/catalog/model/extension/account/contract_withdrawal.php';
 $withdrawal_form = $root . '/upload/catalog/view/theme/basel/template/extension/account/contract_withdrawal_form.twig';
@@ -30,6 +32,11 @@ assertContains("const ARCHIVE_DAYS = 30", $catalog_anchor, 'Thirty-day public ar
 assertContains("'barcode' => \$barcode", $admin_anchor, 'CSV/XML barcode output is missing');
 assertNotContains("p.jan", $admin_anchor, 'JAN must not be used as the Galerija Divila barcode');
 assertNotContains("p.jan", $catalog_anchor, 'JAN must not be used as the Galerija Divila barcode');
+assertContains('loadCroatianLanguageFallback()', $price_list_controller, 'Croatian price-list fallback is missing');
+assertContains("session->data['language']", $price_list_controller, 'Price-list fallback must use the active storefront language');
+assertContains("session->data['language']", $withdrawal_controller, 'Withdrawal fallback must use the active storefront language');
+assertContains("session->data['language']", $footer_controller, 'Compliance footer links must use the active storefront language');
+assertContains("session->data['language']", $catalog_anchor, 'Anchor-price labels must use the active storefront language');
 
 assertContains('contract_withdrawal_csrf', $withdrawal_controller, 'Withdrawal CSRF protection is missing');
 assertContains('isRateLimited($ip, 5, 60)', $withdrawal_controller, 'Withdrawal rate limit is missing');

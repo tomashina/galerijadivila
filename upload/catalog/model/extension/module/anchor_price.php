@@ -62,9 +62,12 @@ class ModelExtensionModuleAnchorPrice extends Model {
 		$currency_code = !empty($this->session->data['currency']) ? $this->session->data['currency'] : $this->config->get('config_currency');
 		$price = $this->currency->format((float)$record['gross_price'], $currency_code);
 		$timestamp = strtotime($record['reference_date']);
-		$language_code = (string)$this->config->get('config_language');
+		$language_code = !empty($this->session->data['language'])
+			? (string)$this->session->data['language']
+			: (string)$this->config->get('config_language');
+		$language_code = strtolower(str_replace('_', '-', $language_code));
 
-		if (strpos($language_code, 'hr') === 0 || strpos($language_code, 'croatia') === 0) {
+		if ($language_code === 'hr' || $language_code === 'hr-hr') {
 			$date = date('j. n. Y.', $timestamp);
 			$text = 'Cijena na ' . $date . ': ' . $price;
 		} else {
