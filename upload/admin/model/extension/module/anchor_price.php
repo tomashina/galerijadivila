@@ -1214,29 +1214,13 @@ class ModelExtensionModuleAnchorPrice extends Model {
 			if (empty($product['anchor_price_id'])
 				|| $product['verification_status'] !== 'confirmed'
 				|| trim((string)$product['product_name']) === ''
-				|| trim((string)$product['model']) === ''
-				|| $this->hasInvalidPublicationBarcode($product)) {
+				|| trim((string)$product['model']) === '') {
 				$total++;
 			}
 		}
 		if ($total > 0) {
-			throw new Exception($total . ' aktivnih proizvoda nema potvrđenu sidrenu cijenu, naziv ili šifru, ili sadrži neispravan GTIN barkod. Objava je zaustavljena.');
+			throw new Exception($total . ' aktivnih proizvoda nema potvrđenu sidrenu cijenu, naziv ili šifru. Objava je zaustavljena.');
 		}
-	}
-
-	private function hasInvalidPublicationBarcode(array $product) {
-		foreach (array('ean') as $field) {
-			$value = isset($product[$field]) ? trim((string)$product[$field]) : '';
-			if ($value === '') {
-				continue;
-			}
-
-			if (!$this->isValidGtin($value)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	private function validPublicationBarcode(array $product) {
