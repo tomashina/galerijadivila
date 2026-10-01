@@ -1,0 +1,258 @@
+<div class="">
+    <script type="text/javascript" src="view/template/extension/mmosolution/dropzone/js/dropzone.js"></script>
+    <link type="text/css" href="view/template/extension/mmosolution/dropzone/css/dropzone.css" rel="stylesheet" media="screen" />
+    <style>
+        /*
+         * IT IS NOT FREE, YOU SHOULD BUY / REFISTER A LICENSE AT HTTPS://MMOSolution.COM
+         * CONTACT: toan@MMOSOLUTION.COM 
+         * AUTHOR: MMOSOLUTION TEAM AT VIETNAM
+         * All code within this file == copyright MMOSOLUTION.COM TEAM | FOUNDED @2012
+         * You can not copy or reuse code within this file without written permission.
+         */
+
+
+        div.table .file-row:nth-child(odd) {
+            background: #f9f9f9;
+        }
+        #mmos-previews{
+            display: table;
+            width: 100%;
+            max-height: 600px;
+            overflow-x: auto;
+
+        }
+        .file-row {
+            display: table-row;
+        }
+        .file-row > div {
+            display: table-cell;
+            padding: 10px;
+            vertical-align: middle;
+        }
+        .file-row:nth-of-type(odd) {
+            background-color: #f9f9f9;
+        }
+        @media (max-width: 765px) {
+            .file-row {
+                display: block;
+                width: 100%;
+                overflow: auto;
+            }
+            .file-row > div {
+                display: block;
+                padding: 0;
+                vertical-align: auto;
+            }
+            .file-row > div.mmos-image {
+                float: left;
+                width: 30%;
+                padding-top: 10px;
+            }
+            .file-row > div.mmos-name {
+                width: 70%;
+                float: left;
+                padding: 0;
+                padding-top: 10px;
+            }
+            .file-row > div.mmos-size {
+                width: 30%;
+                float: left;
+                padding: 0;
+            }
+            .file-row > div.mmos-action {
+                padding: 0;
+                width: 30%;
+                float: left;
+            }
+        }
+        .Upload-form-mmos{
+            border: 2px dashed #0087F7;
+            border-radius: 5px;
+            background: white;
+            padding: 0px 10px;
+            margin: 10px;
+            font-weight: 600;
+        }
+    </style>
+    <section>
+        <div class="" class="files" id="mmos-previews" >
+            <div id="mmos-template" class="file-row button-inline">
+                <!-- This == used as the file preview template -->
+                <div class="mmos-image">
+                    <span class="preview"><img data-dz-thumbnail /></span>
+                </div>
+                <div class="mmos-name">
+                    <p class="name" data-dz-name></p>
+                    <strong class="error text-danger" data-dz-errormessage></strong>
+                </div>
+                <div class="mmos-size">
+                    <p class="size" data-dz-size></p>
+                    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                    </div>
+                </div>
+                <div class="mmos-action text-right">
+                    <button type="button" class="btn btn-primary start hidden"><i class="fa fa-cloud-upload"></i></button>
+                    <button type="button" data-dz-remove class="btn btn-warning cancel"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="col-sm-12">
+            <!-- The global file processing state -->
+            <span class="fileupload-process">
+                <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="opacity: 0;">
+                    <div class="progress-bar  progress-bar-striped progress-bar-success" style="width: 100%;" data-dz-uploadprogress=""></div>
+                </div>
+            </span>
+        </div>
+    </section>
+    <section>
+
+        <div id="attachment-drop">
+            <div class="text-center fileinput-button dz-clickable dz-drag-hover  Upload-form-mmos">
+                <h3>{{ text_upload }}</h3>
+                <p class="help">{{ entry_allow_files }}</p>
+            </div>
+            <div class="col-sm-12">
+                <div class="text-center hidden">
+                    <button type="button" class="btn btn-primary start" >
+                        <i class="fa fa-upload"></i>
+                        <span>{{ text_start_upload }}</span>
+                    </button>
+                    <button type="button" class="btn btn-warning cancel">
+                        <i class="fa fa-circle"></i>
+                        <span>{{ text_cancel_upload }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        $('#attachment-drop .start, #attachment-drop .cancel').hide();
+        /* made by http://mmosolution.com */
+        var previewNode = document.querySelector("#mmos-template");
+        previewNode.id = "";
+        var previewTemplate = previewNode.parentNode.innerHTML;
+        previewNode.parentNode.removeChild(previewNode);
+        var myDropzone = new Dropzone('#tab-attach-document, a[herf="#tab-attach-document"]', {
+            url: "{{ upload_link }}",
+            thumbnailWidth: 100,
+            thumbnailHeight: 100,
+            parallelUploads: 3,
+            acceptedFiles: '{{ file_ext_allowed }}',
+            previewTemplate: previewTemplate,
+            autoDiscover: false,
+            dragenter: "#attachment-drop",
+            autoQueue: true, // Make sure the files are not queued until manually added
+            previewsContainer: "#mmos-previews", // Define the container to display the previews
+            clickable: ".fileinput-button", // Define the element that should be used as click trigger to select files.
+            success: function (file, response)
+            {
+
+                if (response.error) {
+                    $(file.previewTemplate).parent().append('<div class="alert alert-danger col-sm-12">' + response.error + '</div>');
+                } else {
+                    addattachfiledrop(response.mask, response.filename, response.thumb, response.ext, response.user_token);
+                    $(file.previewTemplate).remove();
+                    // $(file.previewTemplate).append('<div class="mmos-action"><button type="button" data-dz-remove class="btn btn-danger delete" id="' + response.user_token + '" onclick="deletefileserver(\'' + response.filename + '\',\'' + response.user_token + '\' )"><i class="fa fa-trash"></i></button></div>')
+
+                }
+
+            }
+
+        }
+        );
+
+        myDropzone.on("addedfile", function (file) {
+            // Hookup the start button
+            file.previewElement.querySelector(".start").onclick = function () {
+                myDropzone.enqueueFile(file);
+            };
+            showhidebuttons();
+        });
+        // Update the total progress bar
+        myDropzone.on("totaluploadprogress", function (progress) {
+            document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
+        });
+        myDropzone.on("sending", function (file) {
+
+            // Show the total progress bar when upload starts
+            document.querySelector("#total-progress").style.opacity = "1";
+            // And disable the start button
+            file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
+
+
+        });
+        // Hide the total progress bar when nothing's uploading anymore
+        myDropzone.on("queuecomplete", function (progress) {
+
+            document.querySelector("#total-progress").style.opacity = "0";
+        });
+        // Setup the buttons for all transfers
+        // The "add files" button doesn't need to be setup because the config
+        // `clickable` has already been specified.
+        document.querySelector("#attachment-drop .start").onclick = function () {
+            myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+
+        };
+        document.querySelector("#attachment-drop .cancel").onclick = function () {
+            // delete file from server
+
+            var allfiles = $('#mmos-previews div.file-row .mmos-action');
+            $.each(allfiles, function (index, value) {
+                var row_id = $(this).find('button').attr('id');
+                $('#' + row_id).trigger('click');
+            });
+
+            myDropzone.removeAllFiles(true);
+            showhidebuttons();
+        };
+
+        function showhidebuttons() {
+
+            if ($('#mmos-previews div.file-row').length !== 0) {
+                $('#attachment-drop .start, #attachment-drop .cancel').show();
+            } else {
+                $('#attachment-drop .start, #attachment-drop .cancel').hide();
+
+            }
+        }
+
+        function deletefileserver(file, user_token) {
+            $.ajax({
+                url: '{{ delete_link }}&file=' + file,
+                type: 'get',
+                dataType: 'json',
+                success: function (json) {
+                    if (json.success) {
+                        $('#' + user_token).parent().parent().remove();
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+            });
+        }
+
+        function addattachfiledrop(mask, filename, thumb, ext, user_token) {
+
+            var checkdouplicase = $('tr[data-user_token="' + user_token + '"]');
+            if (filename !== 'undefined' && checkdouplicase.length < 1) {
+
+                html = '<tr data-user_token="' + user_token + '" id="attach-row' + attach_row + '">';
+                html += '<td class="text-left"><a href="" id="thumb-acctach' + attach_row + '" data-toggle="attachmanager" class="img-thumbnail"><img src="' + thumb + '" alt="" title=""  /></a><input type="hidden" name="product_attach[' + attach_row + '][filename]" value="' + filename + '" id="input-attach' + attach_row + '"/></td>';
+                html += '<td class="text-left"><div class="input-group"><input type="text" name="product_attach[' + attach_row + '][mask]" value="' + mask + '" placeholder="{{ text_attach_file_product_name }}" class="form-control mask" /><span class="input-group-btn"><button class="btn btn-default" type="button" disabled>' + ext + '</button></span></div></td>';
+                html += '<td class="text-center"><input type="checkbox" name="product_attach[' + attach_row + '][login_required]" value="1" class="form-control"/></td>';
+                html += '<td class="text-left"></td>';
+				html += '<td class="text-center"><input type="text" name="product_attach[' + attach_row + '][sort_order]" value="0" class="form-control"/></td>';
+                html += '<td class="text-left"><button type="button" onclick="$(\'#attach-row' + attach_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+                html += '</tr>';
+                $('#attach-internal tbody').append(html);
+                attach_row++;
+            }
+        }
+    </script>
+</div>

@@ -1,0 +1,156 @@
+<div class="mgallery" id="mpvideo{{ module }}">
+  {% if extitle and heading_title %}
+  <h3 class="mheading_title">
+    <span>{{ heading_title }}</span>
+    <a href="{{ view }}">{{ text_view }}</a>
+  </h3>
+  {% endif %}
+  {% if carousel %}
+    <div id="mpvideo-carousel{{ module }}" class="lightgallery owl-carousel mpvideo-carousel mgallery clearfix">
+      {% for video in videos %}
+        <div class="mgallery-thumb transition" data-src="{{ video.link }}">
+          <div class="image-col">
+            <div class="image-incol">
+              <div class="image">
+                <a title="{{ video.name }}"> <img src="{{ video.thumb }}" class="img-responsive" title="{{ video.name }}" alt="{{ video.name }}" /></a>
+              </div>
+              <span class="mgallery-caption">
+                {% if video.link %}
+                  <h5><a href="{{ video.link }}">{{ video.name }}</a></h5>
+                {% else %}
+                  <h5>{{ video.name }}</h5>
+                {% endif %}
+                <div class="mgallery-popup">
+                  <a href=""><i class="enlarge-icon"></i></a>
+                </div>
+                <div class="mgallery-share hide">
+                  <i class="fa fa-facebook" aria-hidden="true"></i>
+                  <i class="fa fa-twitter" aria-hidden="true"></i>
+                  <i class="fa fa-instagram" aria-hidden="true"></i>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+  <div class="mgallery-sub">
+  	<div class="lightgallery">
+    {% for video in videos %}
+      <div class="mgallery-thumb transition" data-src="{{ video.link }}">
+        <div class="image-col">
+          <div class="image-incol">
+            <div class="image">
+              <a title="{{ video.name }}"> <img src="{{ video.thumb }}" class="img-responsive" title="{{ video.name }}" alt="{{ video.name }}" /></a>
+            </div>
+            <span class="mgallery-caption">
+              {% if video.link %}
+                <h5><a href="{{ video.link }}">{{ video.name }}</a></h5>
+              {% else %}
+                <h5>{{ video.name }}</h5>
+              {% endif %}
+              <div class="mgallery-popup">
+                <a href=""><i class="enlarge-icon"></i></a>
+              </div>
+              <div class="mgallery-share hide">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <i class="fa fa-instagram" aria-hidden="true"></i>
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+	  </div>
+  </div>
+  {% endif %}
+</div>
+<style type="text/css">
+  {% if (gallery_setting_color.photo_hoverbg_color is not empty) %}
+    #mpvideo{{ module }}.mgallery .mgallery-caption{
+      background: {{ gallery_setting_color.photo_hoverbg_color }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.photo_tilte_color is not empty) %}
+    #mpvideo{{ module }}.mgallery .image-col h5 a, #mpvideo{{ module }}.mgallery .image-col h5{
+      color: {{ gallery_setting_color.photo_tilte_color }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.photo_zoomicon_color is not empty) %}
+    #mpvideo{{ module }}.mgallery .mgallery-caption .mgallery-popup i{
+      color: {{ gallery_setting_color.photo_zoomicon_color }};
+    }
+  {% endif %}
+
+  {% if (gallery_setting_color.extitle_bgcolor is not empty) %}
+    #mpvideo{{ module }}.mgallery .mheading_title span{
+      background: {{ gallery_setting_color.extitle_bgcolor }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.extitle_textcolor is not empty) %}
+    #mpvideo{{ module }}.mgallery .mheading_title span{
+      color: {{ gallery_setting_color.extitle_textcolor }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.extitle_bordercolor is not empty) %}
+    #mpvideo{{ module }} .mgallery-wrap .mheading_title, .mgallery .mheading_title{
+      border-color: {{ gallery_setting_color.extitle_bordercolor }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.exview_all_color is not empty) %}
+    #mpvideo{{ module }}.mgallery .mheading_title a{
+      color: {{ gallery_setting_color.exview_all_color }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.carousel_arrow_bgcolor is not empty) %}
+    #mpvideo{{ module }} .malbum-carousel .owl-controls .owl-buttons [class*="owl-"], #mpvideo{{ module }} .mpvideo-carousel .owl-controls .owl-buttons [class*="owl-"]{
+      background: {{ gallery_setting_color.carousel_arrow_bgcolor }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.carousel_arrow_color is not empty) %}
+    #mpvideo{{ module }} .malbum-carousel .owl-controls .owl-buttons i, #mpvideo{{ module }} .mpvideo-carousel .owl-controls .owl-buttons i{
+      color: {{ gallery_setting_color.carousel_arrow_color }};
+    }
+  {% endif %}
+</style>
+{% if carousel %}
+<script type="text/javascript"><!--
+$('#mpvideo-carousel{{ module }}').owlCarousel({
+  items: '{{ limit }}',
+	autoPlay: 2000,
+	loop:true,
+  navigation: true,
+	navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+	pagination: false,
+  responsive : {
+    0 : {
+        items: 2
+    },
+    480 : {
+        items: 3
+    },
+    640 : {
+        items: 3
+    },
+    768 : {
+        items: 4
+    }
+  }
+});
+--></script>
+{% endif %}
+
+<script type="text/javascript"><!--
+	$(document).ready(function(){
+	    $('.lightgallery').lightGallery({
+         "selector" : '.mgallery-thumb.transition',
+      });
+      $('#mpvideo{{ module }} .mgallery-thumb.transition h5 a').click(function(e) {
+        e.stopPropagation();
+        window.location = this.href;
+        return true;
+    });
+	});
+--></script>

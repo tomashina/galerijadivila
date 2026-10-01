@@ -1,0 +1,132 @@
+{{ header }}
+<div class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+    {%  set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+    {%  set class = 'col-sm-9' %}
+    {% else %}
+    {%  set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }} {{ cursive_font ? 'mgallery-fonts' : '' }}">{{ content_top }}
+    	<h3 class="mheading_title">{{ heading_title }}</h3>
+  		<div class="mgallery_info">{{ top_description }}</div>
+      {% if social_status %}
+      <div class="row">
+        <div class="col-sm-12 col-xs-12">
+          <div class="mgallery-share">
+            <h3>{{ text_share }}</h3>
+            <!-- AddThis Button BEGIN -->
+            <div class="sharethis-inline-share-buttons"></div>
+            <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5a2534c91b1181001358780e&product=inline-share-buttons"></script>
+            <!-- AddThis Button END -->
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    	<div class="mgallery clearfix lightgallery">
+				{% if photos %}
+    		{% for photo in photos %}
+				<div class="image-col" data-src="{{ photo.popup }}">
+    			<div class="image-incol">
+    				<div class="image">
+    					<a title="{{ photo.name }}"> <img src="{{ photo.thumb }}" class="img-responsive" title="{{ photo.name }}" alt="{{ photo.name }}" /></a>
+    				</div>
+    				<span class="mgallery-caption left-to-right">
+              {% if photo.link %}
+    					 <a class="mphoto_link" href="{{ photo.link }}"><h5>{{ photo.name }}</h5></a>
+              {% else %}
+                <h5>{{ photo.name }}</h5>
+              {% endif %}
+    					<div class="mgallery-popup">
+    						<a href="{{ photo.popup }}"><i class="enlarge-icon" aria-hidden="true"></i></a>
+    					</div>
+    				</span>
+					</div>
+				</div>
+    		{% endfor %}
+     		{% endif %}
+		  </div>
+
+      {% if videos %}
+        <h3 class="mheading_title">{{ heading_video }}</h3>
+        <div class="mgallery clearfix lightgallery">
+          {% for video in videos %}
+            <div class="image-col" data-src="{{ video.link }}">
+              <div class="image-incol">
+                <div class="image">
+                  <a title="{{ video.name }}"> <img width="{{ video_width }}" height="{{ video_height }}" src="{{ video.thumb }}" class="img-responsive" title="{{ video.name }}" alt="{{ video.name }}" /></a>
+                </div>
+                <span class="mgallery-caption left-to-right">
+                  {% if video.link %}
+                    <h5><a href="{{ video.link }}">{{ video.name }}</a></h5>
+                  {% else %}
+                    <h5>{{ video.name }}</h5>
+                  {% endif %}
+                  <div class="mgallery-popup">
+                    <a href=""><i class="enlarge-icon" aria-hidden="true"></i></a>
+                  </div>
+                </span>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+		<div class="mgallery_info">{{ bottom_description }}</div>
+		{{ content_bottom }}</div>
+  	{{ column_right }}</div>
+    {#
+      https://sachinchoolur.github.io/lightgallery.js/docs/api.html
+      https://stackoverflow.com/questions/38146140/hyperlinks-in-lightgallery-js
+    #}
+    <script type="text/javascript"><!--
+      $(document).ready(function(){
+        $('.lightgallery').lightGallery();
+        $('.mphoto_link').on('click', function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          window.location=this.href;
+          // window.open(this.href);
+        });
+      });
+    //--></script>
+</div>
+<style type="text/css">
+  {% if (gallery_setting_color.title_text is not empty) %}
+    .mheading_title{
+      color: {{ gallery_setting_color.title_text }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.photo_hoverbg_color is not empty) %}
+    .mgallery .mgallery-caption{
+      background: {{ gallery_setting_color.photo_hoverbg_color }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.photo_tilte_color is not empty) %}
+    .mgallery .image-col h5 a, .mgallery .image-col .mgallery-caption h5{
+      color: {{ gallery_setting_color.photo_tilte_color }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.photo_zoomicon_color is not empty) %}
+    .mgallery .mgallery-caption .mgallery-popup i{
+      color: {{ gallery_setting_color.photo_zoomicon_color }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.sharethis_bg is not empty) %}
+    .mgallery-share{
+      background: {{ gallery_setting_color.sharethis_bg }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.sharethis_color is not empty) %}
+    .mgallery-share h3{
+      color: {{ gallery_setting_color.sharethis_color }};
+    }
+  {% endif %}
+</style>
+{{ footer }}

@@ -1,0 +1,23 @@
+.quickcheckoutleft {
+	width: 49%;
+	float: left;
+	padding-right: 50px;
+border-right: 10px solid #f7f7f7;
+}
+.quickcheckoutright {
+	width: 49%;
+	float: right;
+}
+.quickcheckoutmid {
+	width: 100%;
+}
+
+@media (max-width: 991px) {
+
+.quickcheckoutleft {
+  width: 49%;
+  float: left;
+  padding-right: 0px;
+  border-right: none;
+}
+	}

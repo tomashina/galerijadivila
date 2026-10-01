@@ -1,0 +1,59 @@
+{{ header }}
+<div id="content" class="flex-shrink-0">
+  <div class="container">
+    <div class="row mb-3">
+      <div class="col-10 col-sm-8">
+        <h1 class="my-0">{{ heading_title }}</h1>
+      </div>
+      <div class="col-2 col-sm-4 text-end">
+        <button type="button" id="btn-form-image-crop" class="btn btn-success" onclick="$('#form-image-crop').submit();"><i class="fa fa-save"></i></button>
+      </div>
+    </div>
+    <div class="row">
+      <div id="alert" class="col-12">
+        {% if success %}
+          <div class="alert alert-success alert-dismissible"><i class="fas fa-check-circle"></i> {{ success }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="alert alert-success">
+              <h3 style="margin:0"><i class="fa fa-thumbs-up"></i> {{ text_congratulations }}</h3>
+            </div>
+            <p>{{ text_message }}</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-image-crop" class="form-horizontal" data-eq-toggle="ajax-form" data-eq-target="#button-form-image-crop">
+              <div class="row mb-3">
+                <label for="input-status" class="col-sm-2 col-form-label">{{ entry_status }}</label>
+                <div class="col-sm-10">
+                  <select name="module_image_crop_status" id="input-status" class="form-select">
+                    {% if module_image_crop_status %}
+                      <option value="1" selected="selected">{{ text_enabled }}</option>
+                      <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                      <option value="1">{{ text_enabled }}</option>
+                      <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">{{ entry_clear_cache }}</label>
+                <div class="col-sm-10">
+                  <a href="{{ clear }}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

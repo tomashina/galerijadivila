@@ -1,0 +1,24 @@
+{% if not special %}
+	<li>
+		<h2>{{ price }} <small>{{ price * 7.53450|number_format(2, '.', ',') }} kn</small></h2>
+	</li>
+{% else %}
+	<li><span style="text-decoration: line-through;">{{ price }} <small>{{ price * 7.53450|number_format(2, '.', ',')  }} kn</small></span></li>
+	<li>
+		<h2>{{ special }} <small>{{ special * 7.53450|number_format(2, '.', ',')  }} kn</small></h2>
+	</li>
+{% endif %}
+{% if tax %}
+	<li>{{ text_tax }} {{ tax }}</li>
+{% endif %}
+{% if points %}
+	<li>{{ text_points }} {{ points }}</li>
+{% endif %}
+{% if discounts %}
+	<li>
+		<hr>
+	</li>
+	{% for discount in discounts %}
+		<li>{{ discount.quantity }}{{ text_discount }}{{ discount.price }}</li>
+	{% endfor %}
+{% endif %}

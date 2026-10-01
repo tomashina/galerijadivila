@@ -1,0 +1,148 @@
+<div class="mgallery" id="mphoto{{ module }}">
+  {% if extitle and heading_title %}
+  <h3 class="mheading_title">
+    <span>{{ heading_title }}</span>
+    <a href="{{ view }}">{{ text_view }}</a>
+  </h3>
+  {% endif %}
+  {% if carousel %}
+    <div id="mphoto-carousel{{ module }}" class="lightgallery owl-carousel mphoto-carousel mgallery clearfix">
+      {% for photo in photos %}
+        <div class="mgallery-thumb transition" data-src="{{ photo.popup }}">
+          <div class="image-col">
+            <div class="image-incol">
+              <div class="image">
+                <a title="{{ photo.name }}"> <img src="{{ photo.image }}" class="img-responsive" title="{{ photo.name }}" alt="{{ photo.name }}" /></a>
+              </div>
+              <span class="mgallery-caption left-to-right">
+                {% if photo.link %}
+                  <h5><a href="{{ photo.link }}">{{ photo.name }}</a></h5>
+                {% else %}
+                  <h5>{{ photo.name }}</h5>
+                {% endif %}
+                <div class="mgallery-popup">
+                  <a href="{{ photo.popup }}"><i class="enlarge-icon"></i></a>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+  <div class="mgallery-sub lightgallery">
+    {% for photo in photos %}
+      <div class="mgallery-thumb transition" data-src="{{ photo.popup }}">
+        <div class="image-col">
+          <div class="image-incol">
+            <div class="image">
+              <a title="{{ photo.name }}"> <img src="{{ photo.image }}" class="img-responsive" title="{{ photo.name }}" alt="{{ photo.name }}" /></a>
+            </div>
+            <span class="mgallery-caption left-to-right">
+              {% if photo.link %}
+                <h5><a href="{{ photo.link }}">{{ photo.name }}</a></h5>
+              {% else %}
+                <h5>{{ photo.name }}</h5>
+              {% endif %}
+              <div class="mgallery-popup">
+                <a href="{{ photo.popup }}"><i class="enlarge-icon"></i></a>
+              </div>
+              <div class="mgallery-share hide">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <i class="fa fa-instagram" aria-hidden="true"></i>
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+<style type="text/css">
+  {% if (gallery_setting_color.photo_hoverbg_color is not empty) %}
+    #mphoto{{ module }}.mgallery .mgallery-caption{
+      background: {{ gallery_setting_color.photo_hoverbg_color }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.photo_tilte_color is not empty) %}
+    #mphoto{{ module }}.mgallery .image-col h5 a, #mphoto{{ module }}.mgallery .image-col h5{
+      color: {{ gallery_setting_color.photo_tilte_color }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.photo_zoomicon_color is not empty) %}
+    #mphoto{{ module }}.mgallery .mgallery-caption .mgallery-popup i{
+      color: {{ gallery_setting_color.photo_zoomicon_color }};
+    }
+  {% endif %}
+
+  {% if (gallery_setting_color.extitle_bgcolor is not empty) %}
+    #mphoto{{ module }}.mgallery .mheading_title span{
+      background: {{ gallery_setting_color.extitle_bgcolor }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.extitle_textcolor is not empty) %}
+    #mphoto{{ module }}.mgallery .mheading_title span{
+      color: {{ gallery_setting_color.extitle_textcolor }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.extitle_bordercolor is not empty) %}
+    #mphoto{{ module }} .mgallery-wrap .mheading_title, .mgallery .mheading_title{
+      border-color: {{ gallery_setting_color.extitle_bordercolor }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.exview_all_color is not empty) %}
+    #mphoto{{ module }}.mgallery .mheading_title a{
+      color: {{ gallery_setting_color.exview_all_color }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.carousel_arrow_bgcolor is not empty) %}
+    #mphoto{{ module }} .malbum-carousel .owl-controls .owl-buttons [class*="owl-"], #mphoto{{ module }} .mphoto-carousel .owl-controls .owl-buttons [class*="owl-"]{
+      background: {{ gallery_setting_color.carousel_arrow_bgcolor }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.carousel_arrow_color is not empty) %}
+    #mphoto{{ module }} .malbum-carousel .owl-controls .owl-buttons i, #mphoto{{ module }} .mphoto-carousel .owl-controls .owl-buttons i{
+      color: {{ gallery_setting_color.carousel_arrow_color }};
+    }
+  {% endif %}
+</style>
+{% if carousel %}
+<script type="text/javascript"><!--
+$('#mphoto-carousel{{ module }}').owlCarousel({
+  items: '{{ limit }}',
+  autoPlay: 2000,
+  loop:true,
+  navigation: true,
+  navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+  pagination: false,
+  responsive : {
+    0 : {
+        items: 2
+    },
+    480 : {
+        items: 3
+    },
+    640 : {
+        items: 3
+    },
+    768 : {
+        items: 4
+    }
+  }
+});
+--></script>
+{% endif %}
+<script type="text/javascript"><!--
+$(document).ready(function(){
+    $('.lightgallery').lightGallery({
+       "selector" : '.mgallery-thumb.transition',
+    });
+    $('#mphoto{{ module }} .mgallery-thumb.transition h5 a').click(function(e) {
+        e.stopPropagation();
+        window.location = this.href;
+        return true;
+    });
+});
+--></script>

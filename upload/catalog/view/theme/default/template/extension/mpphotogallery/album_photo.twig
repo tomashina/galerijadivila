@@ -1,0 +1,108 @@
+{{ header }}
+<div class="container gallery-photo">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+    {%  set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+    {%  set class = 'col-sm-9' %}
+    {% else %}
+    {%  set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }} mgallery-wrap {{ cursive_font ? 'mgallery-fonts' : '' }}">{{ content_top }}
+      <h2>{{ heading_title }}</h2>
+	    {% if galleries %}
+	    	<div class="row">
+		        {% for gallery in galleries %}
+		        <div class="col-sm-12">
+            <h3 class="mheading_title">{{ gallery.title }}</h3>
+            {% if display_description %}
+            <div class="mgallery_info">{{ gallery.top_description }}</div>
+            {% endif %}
+						<div class="mgallery lightgallery">
+  						{% for photo in gallery.photos %}
+  							<div class="image-col" data-src="{{ photo.popup }}">
+  		    				<div class="image-incol">
+  		    					<div class="image">
+  										<img src="{{ photo.image }}" title="{{ photo.name }}" alt="{{ photo.name }}" />
+  									</div>
+  									<span class="mgallery-caption left-to-right">
+  			    					{% if photo.link %}
+                        <a class="mphoto_link" href="{{ photo.link }}"><h5>{{ photo.name }}</h5></a>
+                      {% else %}
+                        <h5>{{ photo.name }}</h5>
+                      {% endif %}
+  			    					<div class="mgallery-popup">
+  			    						<a href="{{ photo.popup }}"><i class="enlarge-icon"></i></a>
+  			    					</div>
+  			    				</span>
+  								</div>
+  							</div>
+  						{% endfor %}
+						</div>
+					</div>
+		      {% endfor %}
+	    	</div>
+	    {% else %}
+      <p class="text-center">{{ text_no_results }}</p>
+      {% endif %}
+    <br/>
+    <div class="row">
+      <div class="col-sm-6 text-left">{{ pagination }}</div>
+      <div class="col-sm-6 text-right">{{ results }}</div>
+    </div>
+		{{ content_bottom }}</div>
+  	{{ column_right }}</div>
+    {#
+      https://sachinchoolur.github.io/lightgallery.js/docs/api.html
+      https://stackoverflow.com/questions/38146140/hyperlinks-in-lightgallery-js
+    #}
+    <script type="text/javascript"><!--
+      $(document).ready(function(){
+        $('.lightgallery').lightGallery();
+        $('.mphoto_link').on('click', function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          window.location=this.href;
+          // window.open(this.href);
+        });
+      });
+    //--></script>
+</div>
+<style type="text/css">
+  {% if (gallery_setting_color.title_text is not empty) %}
+    .mgallery-wrap h2{
+      color: {{ gallery_setting_color.title_text }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.album_title_bg is not empty) %}
+    .mgallery-wrap .mheading_title{
+      background: {{ gallery_setting_color.album_title_bg }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.albumtitle_text is not empty) %}
+    .mgallery-wrap .mheading_title{
+      color: {{ gallery_setting_color.albumtitle_text }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.photo_hoverbg_color is not empty) %}
+    .mgallery .mgallery-caption{
+      background: {{ gallery_setting_color.photo_hoverbg_color }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.photo_tilte_color is not empty) %}
+    .mgallery .image-col h5 a, .mgallery .image-col .mgallery-caption h5{
+      color: {{ gallery_setting_color.photo_tilte_color }} !important;
+    }
+  {% endif %}
+  {% if (gallery_setting_color.photo_zoomicon_color is not empty) %}
+    .mgallery .mgallery-caption .mgallery-popup i{
+      color: {{ gallery_setting_color.photo_zoomicon_color }};
+    }
+  {% endif %}
+</style>
+{{ footer }}

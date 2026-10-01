@@ -1,0 +1,362 @@
+<div id="modal-object" class="modal-dialog modal-lg" style="width: 90%;" >
+    <div class="modal-content" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">{{ heading_title }}</h4>
+
+            <div id="mmos-upload-done" style="  margin-top: 15px; margin-left: 15px; display: none;">                                  
+                <span class="btn btn-warning" onclick="$('#button-refresh').trigger('click');">{{ text_mmosrefesh }}</span>
+                <div class="mmos-upload well" style="margin-top: 15px; max-height: 150px; overflow: scroll;"></div> 
+            </div>
+
+        </div>
+        <div class="well well-sm">
+            <ul class="breadcrumb mmos-breadcrumb">
+                {% set current_forlder = breadcrumbs|last %}
+				{% for breadcrumb in breadcrumbs %} 
+                {% if breadcrumb  !=  current_forlder %} 
+                <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                 {% else %}   
+                <li><span class="text-warning">{{ breadcrumb.text }}</span></li>
+                {% endif %} 
+                {% endfor %} 
+            </ul>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+
+
+                <div class="col-sm-6"><a href="{{ parent }}" data-toggle="tooltip" title="{{ button_parent }}" id="button-parent" class="btn btn-default"><i class="fa fa-level-up"></i></a> <a href="{{ refresh }}" data-toggle="tooltip" title="{{ button_refresh }}" id="button-refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    <button type="button" data-toggle="tooltip" title="{{ button_upload }}" id="button-upload" class="btn btn-primary"><i class="fa fa-upload"></i>Bulk Upload</button>
+                    <button type="button" data-toggle="tooltip" title="bulkadd" id="button-bulkadd" class="btn btn-success"><i class="fa fa-plus-circle"></i>Add all selected</button>
+                    <button type="button" data-toggle="tooltip" title="{{ button_delete }}" id="button-delete" class="btn btn-danger pull-right"><i class="fa fa-trash-o"></i></button>
+                </div>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" name="folder" value="" placeholder="{{ entry_folder }}" class="form-control">
+                        <span class="input-group-btn"><button type="button" title="{{ button_folder }}" id="button-create" class="btn btn-primary"><i class="fa fa-plus"></i> <i class="fa fa-folder-o"></i></button></span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" name="search" value="{{ filter_name }}" placeholder="{{ entry_search }}" class="form-control">
+                        <span class="input-group-btn">
+                            <button type="button" data-toggle="tooltip" title="{{ button_search }}" id="button-search" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                        </span></div>
+                </div>
+            </div>
+
+            <script src="view/javascript/mmosolution/vendor/jquery.ui.widget.js" type="text/javascript"></script>
+            <script src="view/javascript/mmosolution/jquery.iframe-transport.js" type="text/javascript"></script>
+            <script src="view/javascript/mmosolution/jquery.fileupload.js" type="text/javascript"></script>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="mmos-general-upload-progress" class="progress" style="margin-top: 15px; display: none;"><div class="progress-bar progress-bar-success"></div></div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row text-left">
+                {% for object in objects %} 
+                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6 text-center item">
+                    {% if object.type == 'directory' %} 
+                    <div class="text-center directory"><a href="{{ object.href }}" class="directory" style="vertical-align: middle;"><i class="fa fa-folder fa-5x"></i><sub class="text-warning">{{ object.total_files  }}</sub></a></div>
+                    <label>
+                        <input type="checkbox" name="path[]" value="{{ object.path }}" />
+                        {{ object.name }}</label>
+                    {% endif %} 
+                    {% if object.type == 'file' %} 
+                    <div class="thumbnail">
+                        <a href="{{ object.href }}" class="file"><img src="{{ object.thumb }}" alt="{{ object.name }}" title="{{ object.name }}" /></a>
+                        <label>
+                            <input type="checkbox" class="filedata" name="path[]" data-filename="{{ object.name }}" data-thumb="{{ object.thumb }}"  value="{{ object.path }}" />
+                            {{ object.name }}
+                        </label>
+                    </div>
+                    {% endif %} 
+                </div>
+                {% endfor %} 
+            </div>
+            <br />
+
+        </div>
+        <div class="modal-footer">
+            <div class="input-group pull-right">
+                <select name="filter_show_limit" id="input-show-limit" aria-describedby="basic-addon1" class="form-control" onchange="$('#button-filter').trigger('click');">
+                    {% for limit in limits %} 
+                    {% if limit == filter_show_limit %} 
+                    <option value="{{ limit }}" selected>{{ limit }}</option>
+                     {% else %}   
+                    <option value="{{ limit }}">{{ limit }}</option>
+                    {% endif %} 
+                    {% endfor %} 
+                </select>
+            </div>
+
+            {{ pagination }}</div>
+    </div>
+</div>
+<style>
+
+    .item { 
+        min-height: 180px;
+        margin-top: 20px;
+    }
+    .directory sub {
+        bottom: 3.1em;
+        font-weight: bold;
+        font-size: 11px;
+    }
+
+</style>
+<script type="text/javascript"><!--
+    $('#input-show-limit').on('change', function (e) {
+        e.preventDefault();
+        $('#modal-object').load('index.php?route=extension/module/mmos_popup_attachmanager&user_token={{ user_token }}&directory={{ directory }}&limit=' + $(this).val());
+    });
+
+
+    $('.thumbnail a').on('click', function (e) {
+        e.preventDefault();
+        /*{% if  thumb %} */
+        $('#{{ thumb }}').find('img').attr('src', $(this).find('img').attr('src'));
+        /*{% endif %} */
+        /*{% if  target %} */
+        $("input[value='" + $(this).parent().find('input').attr('value') + "']").closest('tr').remove();
+        $('#{{ target }}').attr('value', $(this).parent().find('input').attr('value'));
+        var filename = $(this).children('img').attr('alt');
+        var ext = filename.substring(filename.lastIndexOf('.') + 1);
+        var mask = filename.replace('.' + ext, '');
+        $('#{{ target }}').closest('tr').find('input.mask').attr('value', mask);
+        $('#{{ target }}').closest('tr').find('button.btn-default').html(ext);
+        /*{% endif %} */
+        var range, sel = window.getSelection();
+        if (sel.rangeCount) {
+            var img = document.createElement('img');
+            img.src = $(this).attr('href');
+            range = sel.getRangeAt(0);
+            range.insertNode(img);
+        }
+        $('#modal-object').modal('hide');
+    });
+    $('a.directory').on('click', function (e) {
+        e.preventDefault();
+        $('#modal-object').load($(this).attr('href'));
+    });
+    $('ul.mmos-breadcrumb li a').on('click', function (e) {
+        e.preventDefault();
+        $('#modal-object').load($(this).attr('href'));
+    });
+    $('.pagination a').on('click', function (e) {
+        e.preventDefault();
+        $('#modal-object').load($(this).attr('href'));
+    });
+    $('#button-parent').on('click', function (e) {
+        e.preventDefault();
+        $('#modal-object').load($(this).attr('href'));
+    });
+    $('#button-refresh').on('click', function (e) {
+        e.preventDefault();
+        $('#modal-object').load($(this).attr('href'));
+    });
+    $('#button-search').on('click', function () {
+        var url = 'index.php?route=extension/module/mmos_popup_attachmanager&user_token={{ user_token }}&directory={{ directory }}';
+        var filter_name = $('input[name=\'search\']').val();
+        if (filter_name) {
+            url += '&filter_name=' + encodeURIComponent(filter_name);
+        }
+
+        /*{% if  thumb %} */
+        url += '&thumb=' + '{{ thumb }}';
+        /*{% endif %} */
+        /*{% if  target %} */
+        url += '&target=' + '{{ target }}';
+        /*{% endif %} */
+        $('#modal-object').load(url);
+    });
+    //--></script> 
+<script type="text/javascript"><!--
+$('#button-upload').on('click', function () {
+        $('#form-upload').remove();
+        $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" value="" multiple/></form>');
+        $('#form-upload input[name=\'file\']').fileupload({
+            url: 'index.php?route=extension/module/mmos_popup_attachmanager/upload&user_token={{ user_token }}&directory={{ directory }}',
+            dataType: 'json',
+            beforeSend: function () {
+                $('#button-upload i').replaceWith('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                $('#button-upload').prop('disabled', true);
+                $('#mmos-general-upload-progress').show();
+                $('#mmos-upload-done').show();
+            },
+            done: function (e, data) {
+
+                if (data.result['error']) {
+
+                    $("<p/>").html('<span class="text-danger">' + data.result['mmos_error'] + ' ---> ' + data.result['error'] + '</span>').appendTo('.mmos-upload');
+                } else {
+                    $("<p/>").html('<span class="text-success">' + data.result['mmos_success'] + ' --> OK </span>').appendTo('.mmos-upload');
+                }
+            },
+            progressall: function (e, data) {
+                console.log(data);
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                if (data.loaded >= data.total) {
+
+                    $('#button-upload i').replaceWith('<i class="fa fa-upload"></i>');
+                    $('#button-upload').prop('disabled', false);
+                }
+                $('#mmos-general-upload-progress .progress-bar').css(
+                        'width',
+                        progress + '%'
+                        );
+            },
+            dropZone: null
+
+        })
+                .prop('disabled', !$.support.fileInput)
+                .parent().addClass($.support.fileInput ? undefined : 'disabled');
+        $('#form-upload input[name=\'file\']').trigger('click');
+        return;
+        $('#form-upload input[name=\'file\']').on('change', function () {
+            $.ajax({
+                url: 'index.php?route=extension/module/mmos_popup_attachmanager/upload&user_token={{ user_token }}&directory={{ directory }}',
+                type: 'post',
+                dataType: 'json',
+                data: new FormData($(this).parent()[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $('#button-upload i').replaceWith('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                    $('#button-upload').prop('disabled', true);
+                },
+                complete: function () {
+                    $('#button-upload i').replaceWith('<i class="fa fa-upload"></i>');
+                    $('#button-upload').prop('disabled', false);
+                },
+                success: function (json) {
+                    if (json['error']) {
+                        alert(json['error']);
+                    }
+
+                    if (json['success']) {
+                        alert(json['success']);
+                        $('#button-refresh').trigger('click');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+            });
+        });
+    });
+
+    // $('#button-folder').on('shown.bs.popover', function () {
+    $('#button-create').on('click', function () {
+        if ($('input[name=\'folder\']').val() !== '') {
+            $.ajax({
+                url: 'index.php?route=extension/module/mmos_popup_attachmanager/folder&user_token={{ user_token }}&directory={{ directory }}',
+                type: 'post',
+                dataType: 'json',
+                data: 'folder=' + encodeURIComponent($('input[name=\'folder\']').val()),
+                beforeSend: function () {
+                    $('#button-create i').replaceWith('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                    $('#button-create').prop('disabled', true);
+                },
+                complete: function () {
+                    $('#button-create').replaceWith('<i class="fa fa-plus"></i> <i class="fa fa-folder-o"></i>');
+                    $('#button-create').prop('disabled', false);
+                },
+                success: function (json) {
+                    if (json['error']) {
+                        alert(json['error']);
+                    }
+
+                    if (json['success']) {
+                        // alert(json['success']);
+
+                        $('#button-refresh').trigger('click');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+            });
+        } else {
+            alert('Folder name == empty!');
+        }
+    });
+
+    $('#modal-object #button-bulkadd').on('click', function (e) {
+        //data-filename="{{ object.name }}" data-thumb="{{ object.thumb }}"
+        var selected_files = $('input.filedata[name^=\'path\']:checked');
+        if (selected_files.length > 0) {
+
+            $('input[name^=\'path\']:checked').each(function () {
+                var filepath = $(this).val();
+                var thumb = $(this).attr('data-thumb');
+                var filename = $(this).attr('data-filename');
+                var ext = filename.substring(filename.lastIndexOf('.') + 1);
+                var mask = filename.replace('.' + ext, '');
+                bulkaddattachfile(filepath, thumb, mask, ext);
+            });
+			
+			$('#modal-object').modal('hide');
+        } else {
+
+            alert('No File selected');
+        }
+
+
+    });
+
+
+    $(document).on('click', '#modal-object #button-delete', function (e) {
+        if (confirm('{{ text_confirm }}')) {
+            $.ajax({
+                url: 'index.php?route=extension/module/mmos_popup_attachmanager/delete&user_token={{ user_token }}',
+                type: 'post',
+                dataType: 'json',
+                data: $('input[name^=\'path\']:checked'),
+                beforeSend: function () {
+                    $('#button-delete i').replaceWith('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                    $('#button-delete').prop('disabled', true);
+                },
+                complete: function () {
+                    $('#button-delete i').replaceWith('<i class="fa fa-trash-o"></i>');
+                    $('#button-delete').prop('disabled', false);
+                },
+                success: function (json) {
+                    if (json['error']) {
+                        alert(json['error']);
+                    }
+
+                    if (json['success']) {
+                        alert(json['success']);
+                        $('#button-refresh').trigger('click');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+            });
+        }
+    }
+    );
+    function bulkaddattachfile(filepath, thumb, mask, exten) {
+
+        $("input[value='" + filepath + "']").closest('tr').remove();
+        html = '<tr id="attach-row' + attach_row + '">';
+        html += '<td class="text-left"><a href="" id="thumb-acctach' + attach_row + '" data-toggle="attachmanager" class="img-thumbnail"><img src="' + thumb + '" alt="" title=""  /></a><input type="hidden" name="product_attach[' + attach_row + '][filename]" value="' + filepath + '" id="input-attach' + attach_row + '"/></td>';
+        html += '<td class="text-left"><div class="input-group"><input type="text" name="product_attach[' + attach_row + '][mask]" value="' + mask + '"  class="form-control mask" /><span class="input-group-btn"><button class="btn btn-default" type="button" disabled>' + exten + '</button></span></div></td>';
+        html += '<td class="text-center"><input type="checkbox" name="product_attach[' + attach_row + '][login_required]" value="1" class="form-control"/></td>';
+        html += '<td class="text-left"></td>';
+		html += '<td class="text-center"><input type="text" name="product_attach[' + attach_row + '][sort_order]" value="0" class="form-control"/></td>';
+        html += '<td class="text-left"><button type="button" onclick="$(\'#attach-row' + attach_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+        html += '</tr>';
+        $('#attach-internal tbody').append(html);
+        attach_row++;
+    }
+
+    //--></script>

@@ -1,0 +1,62 @@
+# Local and secret configuration
+.env
+.env.*
+!.env.example
+/upload/config.php
+/upload/admin/config.php
+**/.htpasswd
+**/.htpasswd.*
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+
+# Database dumps, backups, and packaged exports
+*.sql
+*.sql.gz
+*.dump
+*.bak
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+/upload/admin/ProductList*.xls
+/upload/admin/*.xlsx
+/upload/admin/*.csv
+/upload/admin/view/javascript/clicker_ckeditor/clicker/plugins/leaflet/demo/
+/upload/admin/view/javascript/clicker_ckeditor/clicker/plugins/leaflet/Installation Guide.txt
+**/vendor/**/test/
+**/vendor/**/tests/
+**/vendor/**/Tests/
+
+# OpenCart runtime data
+**/error_log
+**/*.log
+/upload/.well-known/
+/upload/image/catalog/
+/upload/image/cache/
+/upload/image/tmp/
+/upload/sitemaps/
+/upload/system/storage/cache/
+/upload/system/storage/download/
+/upload/system/storage/logs/
+/upload/system/storage/modification/
+/upload/system/storage/session/
+/upload/system/storage/upload/
+/storageunbtbl/cache/
+/storageunbtbl/download/
+/storageunbtbl/logs/
+/storageunbtbl/marketplace/
+/storageunbtbl/modification/
+/storageunbtbl/session/
+/storageunbtbl/upload/
+
+# macOS and editor metadata
+**/__MACOSX/
+**/.DS_Store
+**/._*
+.idea/
+.vscode/
+
+# cPanel metadata
+.ftpquota

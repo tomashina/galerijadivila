@@ -1,0 +1,31 @@
+<div class="table-responsive">
+<table class="table table-bordered table-hover">
+<thead>
+	<tr>
+    	<td class="text-left">MATCH</td>
+		<td class="text-left">REPLACE</td>
+		<td class="text-right">DATE ADDED</td>
+		<td class="text-center">ACTION</td>
+    </tr>
+</thead>
+<tbody>
+    {% if (records) %} 
+		{% for record in records %} 
+			<tr>
+			<td class="text-left">{{ record['match'] }}</td>
+			<td class="text-left">{{ record['replace'] }}</td>
+			<td class="text-right">{{ record['date_added'] }}</td>
+			<td class="text-center">	
+				<button type="button" class="btn btn-warning" onclick="deleteReplacer('{{ record['id'] }}')"><i class="fa fa-thrash" aria-hidden="true"></i> Delete</button>
+			</td>
+			</tr>
+		{% endfor %} 
+    {% else %} 
+    		<tr>
+              <td class="text-center" colspan="4">No Records Found</td>
+            </tr> 
+    {% endif %} 
+</tbody>    
+
+</table>
+</div>

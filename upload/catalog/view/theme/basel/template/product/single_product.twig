@@ -1,0 +1,142 @@
+<div class="item single-product">
+    <div class="edge">
+<div class="image" {% if columns == 'list' %}style="width:{{ img_width }}px"{% endif %}>
+    <a href="{{ product.href }}">
+    <img src="{{ product.thumb }}" alt="{{ product.name }}" loading="lazy" title="{{ product.name }}" />
+    {% if product.thumb2 %}
+    <img class="thumb2" src="{{ product.thumb2 }}" loading="lazy" alt="{{ product.name }}" title="{{ product.name }}" />
+    {% endif %}
+    </a>
+{% if product.price and product.special and salebadge_status %}
+    <div class="sale-counter id{{ product.product_id }}"></div>
+    {% if product.cat %}
+    <span class="badge sale_badge"><i>{{ product.sale_badge }} </i></span>
+    {% endif %}
+{% endif %}
+{% if product.new_label %}
+    <span class="badge new_badge"><i>{{ basel_text_new }}</i></span>
+{% endif %}
+
+                 
+
+{% if ((product.quantity < 1) and (stock_badge_status)) %}
+ <span class="badge out_of_stock_badge"><i>{{ basel_text_out_of_stock }}</i></span>
+    {% set button_cart = basel_text_out_of_stock %}
+{% else %}
+    {% set button_cart = default_button_cart %}
+{% endif %}
+<a class="img-overlay" title="{{ product.name }}" href="{{ product.href }}"></a>
+
+<div class="icons-wrapper">
+<a class="icon is_wishlist" data-toggle="tooltip" data-placement="{{ tooltip_align }}"  data-title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');"><span class="icon-heart"></span></a>
+<a class="icon is_compare" onclick="compare.add('{{ product.product_id }}');" data-toggle="tooltip" data-placement="{{ tooltip_align }}" data-title="{{ button_compare }}"><span class="icon-refresh"></span></a>
+<a class="icon is_quickview hidden-xs" onclick="quickview('{{ product.product_id }}');" data-toggle="tooltip" data-placement="{{ tooltip_align }}" data-title="{{ basel_button_quickview }}"><span class="icon-magnifier-add"></span></a>
+</div> <!-- .icons-wrapper -->
+</div><!-- .image ends -->
+<div class="caption">
+<h3 class="product-name"><a href="{{ product.href }}">{{ product.name }}</a></h3>
+<span class="author">{{ product.manufacturer }}</span>
+   {% if product.sku %}
+            <span class="dimezije">{{ product.sku }} cm</span>
+             {% endif %}
+{% if product.rating %}      
+    <div class="rating">
+    <span class="rating_stars rating r{{ product.rating }}">
+    <i class="fa fa-star-o"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i>
+    </span>
+    </div>
+{% endif %}
+
+{% if product.attribute_groups %}
+        <div class="attlist">
+            <table class="table table-striped specification">
+                {% for attribute_group in product.attribute_groups %}
+                    <tbody>
+                    {% for attribute in attribute_group.attribute %}
+                        {% if attribute.featured == 1%}
+                        <tr>
+                            <td><b>{{ attribute.name }}:</b></td>
+                            <td>{{ attribute.text }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
+
+
+<div class="price-wrapper">
+{% if product.price and product.price !='0,00€'%}
+<div class="pwrap">
+  <div class="price">
+                                            {% if not product.special %}
+                                                <span>{{ product.price }}</span>
+                                            {% else %}
+                                                <span class="price-old">{{ product.price }}</span><span class="price-new">{{ product.special }}</span>
+                                            {% endif %}
+                                            {% if product.tax %}
+                                                <span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+                                            {% endif %}
+                                        </div><!-- .price -->
+
+
+ </div>
+
+<!-- .price -->
+ {% else %}
+ <div class="pwrap">
+  <div class="price">
+  <span>{{ basel_text_na_upit }}</span>
+ </div>
+  </div>
+{% endif %}
+
+
+
+{% if product.price =='0,00€' %}
+
+      <a href="{{ product.href }}" class="btn  {% if basel_list_style == '6' %}btn-contrast{% else %}btn-outline{% endif %}" title="{{ basel_text_na_upit }}" ><span class="global-cart"></span> {{ basel_text_na_upit }}</a>
+   
+{% else %}
+        {% if ((product.quantity < 1) and (stock_badge_status)) %}
+
+           {% set button_cart = basel_text_out_of_stock %}
+          <a href="{{ product.href }}" class="btn  {% if basel_list_style == '6' %}btn-contrast{% else %}btn-outline{% endif %}" title="{{ button_cart }}" ><span class="global-cart"></span> {{ button_cart }}</a>
+         
+        {% else %}
+         <a class="btn  {% if basel_list_style == '6' %}btn-contrast{% else %}btn-outline{% endif %}" onclick="cart.add('{{ product.product_id }}', '{{ product.minimum }}');"><span class="global-cart"></span> {{ button_cart }}</a>
+        {% endif %}
+
+{% endif %}
+
+<!-- .price-wrapper -->
+
+
+</div>
+
+
+<div class="plain-links">
+<a class="icon is_wishlist link-hover-color" onclick="wishlist.add('{{ product.product_id }}');" title="{{ button_wishlist }}"><span class="icon-heart"></span> {{ button_wishlist }}</a>
+<a class="icon is_compare link-hover-color" onclick="compare.add('{{ product.product_id }}');" title="{{ button_compare }}"><span class="icon-refresh"></span> {{ button_compare }}</a>
+<a class="icon is_quickview link-hover-color" onclick="quickview('{{ product.product_id }}');"><span class="icon-magnifier-add"></span> {{ basel_button_quickview }}</a>
+</div><!-- .plain-links-->
+</div><!-- .caption-->
+{% if product.sale_end_date and countdown_status %}
+<script>
+  $(function() {
+    $(".sale-counter.id{{ product.product_id }}").countdown("{{ product.sale_end_date }}").on('update.countdown', function(event) {
+  var $this = $(this).html(event.strftime(''
+    + '<div>'
+    + '%D<i>{{ basel_text_days }}</i></div><div>'
+    + '%H <i>{{ basel_text_hours }}</i></div><div>'
+    + '%M <i>{{ basel_text_mins }}</i></div><div>'
+    + '%S <i>{{ basel_text_secs }}</i></div></div>'));
+});
+});
+</script>
+{% endif %}
+
+   </div>
+</div><!-- .single-product ends -->

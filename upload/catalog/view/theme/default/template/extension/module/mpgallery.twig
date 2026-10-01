@@ -1,0 +1,112 @@
+<div class="mgallery mgallery-ext-ablum" id="mgallery-{{ module }}">
+  {% if extitle and heading_title %}
+  <h3 class="mheading_title">
+    <span>{{ heading_title }}</span>
+    <a href="{{ view }}">{{ text_view }}</a>
+  </h3>
+  {% endif %}
+  {% if carousel %}
+  <div id="malbum-carousel{{ module }}" class="owl-carousel malbum-carousel mgallery clearfix">
+    {% for gallery in galleries %}
+      <div class="mgallery-layout">
+        <div class="mgallery-thumb transition clearfix">
+          <a class="mgallery-thumbnail" href="{{ gallery.href }}">
+            <div class="image"><img src="{{ gallery.thumb }}" class="img-responsive" alt="{{ heading_title }}" /></div>
+            <div class="caption">
+              <h4>{{ gallery.title }}</h4>
+              <div class="mtotal">{{ text_photos }} {{ gallery.total_photos }}</div>
+              <div class="malbum-viewed">{{ text_viewed }}: {{ gallery.viewed }}</div>
+            </div>
+            <div class="clearfix"></div>
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="mgallery-sub">
+    <div class="mgallery malbum-nocarousel clearfix">
+      {% for gallery in galleries %}
+        <div class="mgallery-layout ">
+          <div class="mgallery-thumb transition clearfix">
+            <a class="mgallery-thumbnail" href="{{ gallery.href }}">
+              <div class="image"><img src="{{ gallery.thumb }}" class="img-responsive" alt="{{ heading_title }}" /></div>
+              <div class="caption">
+                <h4>{{ gallery.title }}</h4>
+                <div class="mtotal">{{ text_photos }} {{ gallery.total_photos }} </div>
+                <div class="malbum-viewed">{{ text_viewed }}: {{ gallery.viewed }}</div>
+              </div>
+              <div class="clearfix"></div>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+<style type="text/css">
+  {% if (gallery_setting_color.albums_detail_text is not empty) %}
+    #mgallery-{{ module }}.mgallery .caption, .mgallery .caption h4{
+      color: {{ gallery_setting_color.albums_detail_text }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.albums_wrapbg is not empty) %}
+    #mgallery-{{ module }}.mgallery .mgallery-thumb{
+      background: {{ gallery_setting_color.albums_wrapbg }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.extitle_bgcolor is not empty) %}
+    #mgallery-{{ module }}.mgallery .mheading_title span{
+      background: {{ gallery_setting_color.extitle_bgcolor }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.extitle_textcolor is not empty) %}
+    #mgallery-{{ module }}.mgallery .mheading_title span{
+      color: {{ gallery_setting_color.extitle_textcolor }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.extitle_bordercolor is not empty) %}
+    #mgallery-{{ module }} .mgallery-wrap .mheading_title, .mgallery .mheading_title{
+      border-color: {{ gallery_setting_color.extitle_bordercolor }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.exview_all_color is not empty) %}
+    #mgallery-{{ module }}.mgallery .mheading_title a{
+      color: {{ gallery_setting_color.exview_all_color }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.carousel_arrow_bgcolor is not empty) %}
+    #mgallery-{{ module }} .malbum-carousel .owl-controls .owl-buttons [class*="owl-"], #mgallery-{{ module }} .mphoto-carousel .owl-controls .owl-buttons [class*="owl-"]{
+      background: {{ gallery_setting_color.carousel_arrow_bgcolor }};
+    }
+  {% endif %}
+  {% if (gallery_setting_color.carousel_arrow_color is not empty) %}
+    #mgallery-{{ module }} .malbum-carousel .owl-controls .owl-buttons i, #mgallery-{{ module }} .mphoto-carousel .owl-controls .owl-buttons i{
+      color: {{ gallery_setting_color.carousel_arrow_color }};
+    }
+  {% endif %}
+</style>
+{% if carousel %}
+<script type="text/javascript"><!--
+$('#malbum-carousel{{ module }}').owlCarousel({
+  items: '{{ limit }}',
+  autoPlay: 2000,
+  loop:true,
+  navigation: true,
+  navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+  pagination: false,
+  responsive : {
+    0 : {
+        items: 1
+    },
+    480 : {
+        items: 2
+    },
+    768 : {
+        items: 2
+    }
+  }
+});
+--></script>
+{% endif %}

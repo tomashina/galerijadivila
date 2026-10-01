@@ -1,0 +1,92 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="content">
+            <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+              <div class="col-sm-8">
+                 <div class="form-group">
+                  <label class="col-sm-4 control-label" for="input-status">GD Wep Status</label>
+                  <div class="col-sm-8">
+                    {{ text_alert }}
+                  </div>
+                </div>
+                <div class="form-group">
+              		<label class="col-sm-4 control-label" for="input-status">{{ entry_status }}</label>
+              		<div class="col-sm-8">
+                		<label class="switch">
+                			<input type="checkbox" name=" module_webpimages_status" {% if  module_webpimages_status %}checked{% endif %}>
+                			<span class="slider round"></span>
+                		</label>
+              	  </div>
+        	      </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label" for="input-quality">{{ entry_quality }}</label>
+                  <div class="col-sm-4">
+                    <div class="input-group rangeslidecontainer">
+                      <input type="range" min="1" max="100" value="{% if module_webpimages_quality > 0 %}{{ module_webpimages_quality }}{% endif %}" class="rangeslider" id="myRange">
+                      <input type="hidden" value="{{ module_webpimages_quality }}" name="module_webpimages_quality"/>
+                      <span id="range" class="pull-right">{{ module_webpimages_quality }}%</span>
+                      </div>
+                  </div>
+                </div>
+                <div class="form-group">
+              		<label class="col-sm-4 control-label" for="input-cookie"><span data-toggle="tooltip" title="{{ help_cookie }}">{{ entry_cookie }}</span></label>
+              		<div class="col-sm-8">
+                		<label class="switch">
+                			<input type="checkbox" name=" module_webpimages_cookie" {% if  module_webpimages_cookie %}checked{% endif %}>
+                			<span class="slider round"></span>
+                		</label>
+              	  </div>
+        	      </div>
+              </div>
+              <div class="col-sm-4">
+                {{ help_gd }}
+                <br/><br/><h3>GD Info</h3>
+                <ul>
+                {% for key, value in gdinfo %}
+                    <li>{{ key }} => {{ value }}</li>
+                {% endfor %}
+                </ul>
+              </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+  $('#myRange').val();
+  
+  
+  $('#myRange').change(function(){
+    var myVar = $(this).val();
+    var output = document.getElementById("range");
+    $('input[name=\'module_webpimages_quality\']').val(myVar);
+    output.innerHTML = myVar+'%' ;
+   
+});
+</script>
+</div>
+{{ footer }}

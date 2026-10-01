@@ -1,0 +1,36 @@
+/*.m-menu-wrap{background: #F3F6F8;margin-bottom: 30px}*/
+.m-menu-wrap .page-header{background: rgba(41,58,74,0.95);padding-left: 25px;padding-right: 25px;color: #fff;margin-top: 15px;border-radius: 2px 2px 0px 0px;-webkit-border-radius: 2px 2px 0px 0px;padding-top: 25px;padding-bottom: 15px;margin-bottom: 0;z-index: 999;border-bottom: none;}
+.m-menu-wrap .page-header h1{color: #fff}
+.m-menu-wrap .breadcrumb li a{color: #fff}
+.m-menu-wrap .m-menu-tabs ul{margin: 0;margin-bottom: 15px}
+.m-menu-wrap .m-menu-tabs ul li{text-align: center;float: left;padding: 0}
+.m-menu-wrap .m-menu-tabs ul li.active,.m-menu-wrap .m-menu-tabs ul li.open, .m-menu-wrap .m-menu-tabs ul li:hover, .m-menu-wrap .m-menu-tabs li.dropdown > div > a:hover{background: rgba(233, 233, 233, 0.8)}
+.m-menu-wrap .m-menu-tabs ul li.active > a, .m-menu-wrap .m-menu-tabs ul li.active > i, .m-menu-wrap .m-menu-tabs ul li.open > a, .m-menu-wrap .m-menu-tabs ul li.open > i, .m-menu-wrap .m-menu-tabs ul li:hover > a, .m-menu-wrap .m-menu-tabs ul li:hover > i, .m-menu-wrap .m-menu-tabs li.dropdown > div > a:hover, .m-menu-wrap .m-menu-tabs li.dropdown > div > a:hover > i{color: #151515}
+.m-menu-wrap .m-menu-tabs ul li a{padding: 15px 20px;display: block;color: #fff;line-height: normal;font-size: 14px}
+.m-menu-wrap .m-menu-tabs, .m-menu-wrap .m-menu-tabs .dropdown-menu{background: #151515;border-radius: 0px 0px 2px 2px;-webkit-border-radius: 0px 0px 2px 2px}
+.m-menu-wrap .m-menu-tabs ul li i{font-size: 14px}
+.m-menu-wrap .m-menu-tabs ul li span{margin-left: 5px}
+.m-menu-wrap .panel-default .panel-heading{background: rgba(233, 233, 233, 0.8);color: #151515;padding: 5px 5px 5px 15px}
+.m-menu-wrap .panel-default{border: none}
+.m-menu-wrap .panel-title{padding-bottom: 10px;padding-top: 10px}
+.m-menu-wrap .panel-heading .btn-primary{background-color: #41860a}
+.m-menu-wrap .nav-tabs > li > a{/*border-radius: 5px 5px 0 0;*//*border: none;*//*padding: 10px 20px;*/}
+.m-menu-wrap .nav-tabs > li.active > a, .m-menu-wrap .nav-tabs > li.active > a:hover, .m-menu-wrap .nav-tabs > li.active > a:focus{background: rgba(233, 233, 233, 0.8);color: #151515;font-weight: bold}
+.m-menu-wrap .m-fieldset{border: 1px solid #ddd;margin-bottom: 15px}
+.m-menu-wrap .m-fieldset h3{background: #d9dee7;font-size: 13px;font-weight: bold;padding: 10px;text-transform: uppercase}
+.m-menu-wrap .m-fieldset{position: relative}
+.reset-colors{background: #f84141;border: none;color: #fff;font-size: 12px;padding: 5px 10px;position: absolute;right: 3px;top: 3px}
+/*.alert-success{background-color: rgba(233, 233, 233, 0.8);border-color: rgba(233, 233, 233, 0.8);color: #fff}*/
+.m-menu-wrap fieldset h3{padding: 10px 15px;background: rgba(233, 233, 233, 0.8);color: #151515;text-align: center;border-radius: 2px;-webkit-border-radius: 2px}
+.mp-buttons .btn-primary{background-color : #fff;border-color: #ccc;color: #333}
+.mp-buttons .btn-primary:hover{background-color: rgba(41,58,74,0.95);border-color: rgba(233, 233, 233, 0.8);color: #fff}
+.mp-buttons .btn-primary.active{background-color: rgba(41,58,74,0.95);border-color: rgba(233, 233, 233, 0.8);color: #fff}
+@media(max-width: 767px){
+	.m-menu-wrap .m-menu-tabs ul li{width: 50%}
+	.m-menu-wrap .page-header h1{font-size: 24px}
+	.m-menu-wrap .panel-default .panel-heading .pull-right{float: none !important;text-align: right}
+}
+
+.help{font-weight:400;display:block;color:#8c8787;margin-top:15px}
+.help:before{font-family:'FontAwesome';color:#8c8787;content:"\f059";margin-right:4px}
+.table thead td span.help[data-toggle="tooltip"]::after, label.control-label span.help::after{content:""}

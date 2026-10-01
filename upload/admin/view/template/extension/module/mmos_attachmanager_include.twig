@@ -1,0 +1,129 @@
+<div class="tab-pane" id="tab-attach-document">
+    <ul class="nav nav-tabs" id="attach-document">  
+        <li><a href="#internal" data-toggle="tab">{{ tab_attach_internal }}</a></li>
+        {% if attach_info_config.extendlink == '1' %}  <li><a href="#external" data-toggle="tab">{{ tab_attach_external }}</a></li> {% endif %} 
+
+        <div class="pull-right">
+            <a class="btn btn-success btn-xs" href="index.php?route=extension/module/mmos_attachmanager&user_token={{ user_token }}" target="_blank">{{ button_config_attachments }}</a>
+        </div>
+    </ul>
+    <div class="tab-content"> 
+        <div class="tab-pane" id="internal">  
+            <div class="table-responsive">
+                <table id="attach-internal" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <td class="col-sm-2 col-md-1 text-center">{{ text_attach_file_product_thumb }}</td>
+                            <td class="text-left col-sm-6 col-md-9">{{ text_attach_file_product_name }}</td>
+                            <td class="text-left col-sm-2 col-md-1 text-center"><i class="fa fa-lock" title="{{ text_attach_file_product_login }}"></i> </td>
+                            <td class="text-left col-sm-2 col-md-1 text-center">{{ text_attach_file_product_count }}</td>
+							<td class="text-left col-sm-2 col-md-1 text-center">{{ 'Sort Order' }}</td>
+                            <td></td>
+                        </tr>            
+                    </thead>  
+                    <tbody>
+                        {% set attach_row = 0 %}
+                        {% for product_attach in product_attachs %} 
+                        <tr id="attach-row{{ attach_row }}">
+                            <td class="text-center">
+							<input type="hidden" name="product_attach[{{ attach_row }}][filename]" value="{{ product_attach.filename }}" id="input-attach{{ attach_row }}"/>
+							<input type="hidden" name="product_attach[{{ attach_row }}][product_attach_file_id]" value="{{ product_attach.product_attach_file_id }}"  >
+							<a href="" id="thumb-acctach{{ attach_row }}" data-toggle="attachmanager" class="img-thumbnail"><img src="{{ product_attach.thumb }}" alt="" title="" data-placeholder="{{ no_image }}" /></a>
+							</td>
+                            <td class="text-center"><div class="input-group">
+                                    <input type="text" name="product_attach[{{ attach_row }}][mask]" value="{{ product_attach.mask }}" placeholder="{{ text_attach_file_product_name }}" class="form-control mask" />
+                                    <span class="input-group-btn"><button class="btn btn-default" type="button" disabled>{{ product_attach.ext }}</button></span></div></td>
+                            <td class="text-center"><input type="checkbox" name="product_attach[{{ attach_row }}][login_required]" value="1" class="form-control"{{ product_attach.login_required == 1 ? 'checked' : '' }}/></td>
+                            <td class="text-center">{{ product_attach.download }}
+							<input type="hidden" name="product_attach[{{ attach_row }}][download]" value="{{ product_attach.download }}"/>
+							</td>
+							<td class="text-center"><input type="text" name="product_attach[{{ attach_row }}][sort_order]" value="{{ product_attach.sort_order }}" class="form-control"/></td>
+                            <td class="text-center"><button type="button" onclick="$('#attach-row{{ attach_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+                        </tr>
+                        {% set attach_row = attach_row + 1 %} 
+                        {% endfor %} 
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6" class="text-center">{{ drapdrop }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5"></td>
+                            <td class="text-left"><button type="button" onclick="addattachfile();" data-toggle="tooltip" title="{{ button_add_attach_file_product }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+                        </tr>
+                    </tfoot>
+
+
+
+                </table>
+            </div> 
+        </div>
+        <div class="tab-pane" id="external">  
+            <div class="table-responsive">
+                <table id="attach-external" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <td class="text-left">{{ text_attach_extend_link_name }}</td>
+                            <td class="text-left">{{ text_attach_extend_link_download }}</td>
+                            <td class="text-left">{{ text_attach_file_product_login }}</td>
+                            <td></td>
+                        </tr>            
+                    </thead>  
+                    <tbody>
+                        {% set attach_exten_link = 0 %}
+                        {% for exten_link in exten_links %} 
+                        <tr id="attach-exten-row{{ attach_exten_link }}">
+                            <td class="text-left"><input type="text" name="exten_link[{{ attach_exten_link }}][link_name]" value="{{ exten_link.link_name }}" placeholder="{{ text_attach_extend_link_name }}" class="form-control" /></td>
+                            <td class="text-left"><input type="text" name="exten_link[{{ attach_exten_link }}][link_download]" value="{{ exten_link.link_download }}" placeholder="{{ text_attach_extend_link_download }}" class="form-control" /></td>
+                            <td class="text-center"><input type="checkbox" name="exten_link[{{ attach_exten_link }}][login_required]" value="1" class="form-control"{{ exten_link.login_required  and  exten_link.login_required == 1 ? 'checked' : '' }}/></td>
+                            <td class="text-left"><button type="button" onclick="$('#attach-exten-row{{ attach_exten_link }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+                        </tr>
+                        {% set attach_exten_link = attach_exten_link + 1 %} 
+                        {% endfor %} 
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3"></td>
+                            <td class="text-left"><button type="button" onclick="addattachlink();" data-toggle="tooltip" title="{{ button_add_attach_exten_link }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div> 
+        </div>
+    </div> 
+</div> 
+<script type="text/javascript">
+    $('#attach-document a:first').tab('show');
+    var attach_row = '{{ attach_row }}';
+
+    function addattachfile() {
+        html = '<tr id="attach-row' + attach_row + '">';
+        html += '<td class="text-left"><a href="" id="thumb-acctach' + attach_row + '" data-toggle="attachmanager" class="img-thumbnail"><img src="{{ no_image }}" alt="" title="" data-placeholder="{{ no_image }}" /></a><input type="hidden" name="product_attach[' + attach_row + '][filename]" value=""id="input-attach' + attach_row + '"/></td>';
+        html += '<td class="text-left"><div class="input-group"><input type="text" name="product_attach[' + attach_row + '][mask]" value="" placeholder="{{ text_attach_file_product_name }}" class="form-control mask" /><span class="input-group-btn"><button class="btn btn-default" type="button" disabled>ext</button></span></div></td>';
+        html += '<td class="text-center"><input type="checkbox" name="product_attach[' + attach_row + '][login_required]" value="1" class="form-control"/></td>';
+        html += '<td class="text-left"></td>';
+		html += '<td class="text-center"><input type="text" name="product_attach[' + attach_row + '][sort_order]" value="0" class="form-control"/></td>';
+        html += '<td class="text-left"><button type="button" onclick="$(\'#attach-row' + attach_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+        html += '</tr>';
+        $('#attach-internal tbody').append(html);
+
+        $("#thumb-acctach" + attach_row + "").trigger("click");
+
+        $("#attach-row" + attach_row + " td div #button-object").trigger("click");
+
+        attach_row++;
+    }
+  
+
+    var attach_exten_link = '{{ attach_exten_link }}';
+    function addattachlink() {
+        html = '<tr id="attach-exten-row' + attach_exten_link + '">';
+        html += '<td class="text-left"><input type="text" name="exten_link[' + attach_exten_link + '][link_name]" value="" placeholder="{{ text_attach_extend_link_name }}" class="form-control" /></td>';
+        html += '<td class="text-left"><input type="text" name="exten_link[' + attach_exten_link + '][link_download]" value="" placeholder="{{ text_attach_extend_link_download }}" class="form-control" /></td>';
+        html += '<td class="text-center"><input type="checkbox" name="exten_link[' + attach_exten_link + '][login_required]" value="1" class="form-control" /></td>';
+        html += '<td class="text-left"><button type="button" onclick="$(\'#attach-exten-row' + attach_exten_link + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+        html += '</tr>';
+        $('#attach-external tbody').append(html);
+        attach_exten_link++;
+    }
+</script>

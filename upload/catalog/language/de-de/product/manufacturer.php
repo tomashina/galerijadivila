@@ -1,0 +1,39 @@
+<?php
+/**
+ * @version		$Id: manufacturer.php 6115 2021-03-14 10:15:06Z mic $
+ * @package		Translation Frontend
+ * @author		mic - http://osworx.net
+ * @copyright	2021 OSWorX
+ * @license		GPL - www.gnu.org/copyleft/gpl.html
+ */
+
+// Heading
+// Heading
+$_['heading_title']		= 'Autoren';
+
+// Text
+$_['text_brand']		= 'Autoren';
+$_['text_index']		= 'Autorenübersicht';
+$_['text_error']		= 'Autoren nicht gefunden!';
+$_['text_no_results']	= 'Von diesem Autoren sind keine Produkte vorhanden.';
+$_['text_quantity']		= 'Menge';
+$_['text_manufacturer']	= 'Autoren';
+$_['text_model']		= 'Art.Nr.';
+$_['text_points']		= 'Bonuspunkte';
+$_['text_price']		= 'Preis';
+$_['text_tax']			= 'Preis ohne Steuer';
+$_['text_compare']		= 'Produktvergleich (%s)';
+$_['text_sort']			= 'Sortieren nach';
+$_['text_default']		= 'Vorgabe';
+$_['text_name_asc']		= 'Name (A &gt; Z)';
+$_['text_name_desc']	= 'Name (Z &gt; A)';
+$_['text_price_asc']	= 'Preis (Niedrig &gt; Hoch)';
+$_['text_price_desc']	= 'Preis (Hoch &gt; Niedrig)';
+$_['text_rating_asc']	= 'Bewertung (Niedrig)';
+$_['text_rating_desc']	= 'Bewertung (Hoch)';
+$_['text_model_asc']	= 'Artikelnr. (A &gt; Z)';
+$_['text_model_desc']	= 'Artikelnr. (Z &gt; A)';
+$_['text_limit']		= 'Anzeige';
+
+// < 3.1.x
+$_['text_empty']		= 'Von diesem Hersteller sind keine Produkte vorhanden.';

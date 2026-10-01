@@ -1,0 +1,64 @@
+{{ header }}
+<div class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+    {% set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-sm-9' %}
+    {% else %}
+    {% set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+    <h2>{{ heading_title }}</h2>
+	  {% if gallerys %}
+    <div class="mgallery-album {{ cursive_font ? 'mgallery-fonts' : '' }}">
+      {% for gallery in gallerys %}
+      <div class="mablum">
+      	<div class="inner-mablum clearfix">
+          <a class="mablum-thumbnail" href="{{ gallery.href }}">
+        		<div class="image"><img src="{{ gallery.image }}" alt="{{ gallery.title }}" /></div>
+            <div class="caption">
+      			  <h3 class="ucase">{{ gallery.title }}</h3>
+      			  <div class="mtotal">{{ text_photos }} {{ gallery.total_photos }}</div>
+              <div class="malbum-viewed">{{ text_viewed }}: {{ gallery.viewed }}</div>
+            </div>
+            <div class="clearfix"></div>
+          </a>
+         </div>
+	     </div>
+      {% endfor %}
+    </div>
+    {% else %}
+	  <p class="text-center">{{ text_no_results }}</p>
+  	{% endif %}
+    <br style="clear:both;" />
+  	<div class="row">
+  		<div class="col-sm-6 text-left">{{ pagination }}</div>
+  		<div class="col-sm-6 text-right">{{ results }}</div>
+  	</div>
+	{{ content_bottom }}</div>
+	{{ column_right }}</div>
+</div>
+<style type="text/css">
+  {% if gallery_setting_color.albumsapge_title_text %}
+  h2{
+    color: {{ gallery_setting_color.albumsapge_title_text }};
+  }
+  {% endif %}
+  {% if gallery_setting_color.albums_detail_text %}
+  .mgallery-album .mablum .caption, .mgallery-album .mablum h4{
+    color: {{ gallery_setting_color.albums_detail_text }};
+  }
+  {% endif %}
+  {% if gallery_setting_color.albums_wrapbg %}
+  .mgallery-album .inner-mablum{
+    background: {{ gallery_setting_color.albums_wrapbg }};
+  }
+  {% endif %}
+</style>
+{{ footer }}

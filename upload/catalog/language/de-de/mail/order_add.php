@@ -1,0 +1,41 @@
+<?php
+/**
+ * @version		$Id: order_add.php 6115 2021-03-14 10:15:06Z mic $
+ * @package		Translation Deutsch
+ * @author		mic - https://osworx.net
+ * @copyright	2021 OSWorX
+ * @license		GPL - www.gnu.org/copyleft/gpl.html
+ */
+
+// Text
+$_['text_subject']			= '%s - Auftrag %s';
+$_['text_greeting']			= 'Danke für das Interesse an unseren Produkten auf %s.<br>Die Bestellung ist eingegangen und wird so rasch wie möglich bearbeitet.';
+$_['text_link']				= 'Für weitere Auftragsdetails bitte Link anklicken:';
+$_['text_order_detail']		= 'Auftragsdetails';
+$_['text_instruction']		= 'Anweisung';
+$_['text_order_id']			= 'Auftragsnr.';
+$_['text_date_added']		= 'Erstellt';
+$_['text_order_status']		= 'Auftragsstatus';
+$_['text_payment_method']	= 'Zahlungsart';
+$_['text_shipping_method']	= 'Versandart';
+$_['text_email']			= 'Email';
+$_['text_telephone']		= 'Telefon';
+$_['text_ip']				= 'IP';
+$_['text_payment_address']	= 'Rechnungsadresse';
+$_['text_shipping_address']	= 'Zustelladresse';
+$_['text_products']			= 'Produkte';
+$_['text_product']			= 'Produkt';
+$_['text_model']			= 'Art.Nr.';
+$_['text_quantity']			= 'Menge';
+$_['text_price']			= 'Preis';
+$_['text_order_total']		= 'Gesamt';
+$_['text_total']			= 'Gesamt';
+$_['text_download']			= 'Mit nachstehendem Link kann - sobald die Zahlung bestätigt ist - der Downloadartikel geladen werden:';
+$_['text_comment']			= 'Kommentar zur Bestellung:';
+$_['text_footer']			= 'Sollten noch Fragen offen sein, einfach auf dieses Email antworten.';
+
+$_['text_bank'] = '<p>Wir haben Ihre Bestellung Nummer %s ordnungsgemäß erhalten und danken Ihnen.</p><p>Bitte führen Sie die Zahlung gemäß den folgenden Zahlungsanweisungen durch.</p><p> Die Zahlungsfrist beträgt maximal 24 Stunden, während der wir die von Ihnen bestellte Ware für Sie reserviert halten.</p><p> Sollten wir innerhalb dieser Frist keine Zahlung erhalten, müssen wir diese Bestellung leider stornieren.</p>
+IBAN KONTO: HR6123400091110402072 <br>
+MODELL: 05 VERWENDUNGSZWECK: %s</p>
+
+<p>ODER EINFACH DEN 2D-BARCODE SCANNEN</p>';
