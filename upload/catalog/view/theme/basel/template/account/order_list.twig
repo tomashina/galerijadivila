@@ -40,6 +40,7 @@
               <td class="text-right hidden-xs hidden-sm">{{ order.date_added }}</td>
               <td class="text-right">
               <a href="{{ order.view }}" class="btn btn-primary btn-sm">{{ button_view }}</a>
+              <a href="{{ order.contract_withdrawal }}" class="btn btn-default btn-sm" data-toggle="tooltip" title="Obrazac za jednostrani raskid ugovora"><i class="fa fa-file-text-o"></i></a>
               </td>
             </tr>
             {% endfor %}

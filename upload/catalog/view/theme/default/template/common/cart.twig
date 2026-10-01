@@ -14,7 +14,9 @@
             {% if product.recurring %} <br />
             - <small>{{ text_recurring }} {{ product.recurring }}</small> {% endif %}</td>
           <td class="text-right">x {{ product.quantity }}</td>
-          <td class="text-right">{{ product.total }}</td>
+          <td class="text-right">{{ product.total }}
+            {% if product.price and product.anchor_price_text %}<span class="anchor-price">{{ product.anchor_price_text|escape }}</span>{% endif %}
+          </td>
           <td class="text-center"><button type="button" onclick="cart.remove('{{ product.cart_id }}');" title="{{ button_remove }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button></td>
         </tr>
         {% endfor %}

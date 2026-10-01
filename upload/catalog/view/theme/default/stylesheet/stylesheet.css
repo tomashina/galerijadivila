@@ -790,6 +790,22 @@ html[dir=rtl] #cart .dropdown-menu {
   right: auto;
 
 }
+
+/* Sidrena cijena */
+.anchor-price {
+	display: block;
+	margin-top: 4px;
+	color: #666;
+	font-size: 12px;
+	line-height: 1.35;
+}
+.anchor-price-detail {
+	margin-top: 8px;
+	font-size: 14px;
+}
+.anchor-price-card {
+	min-height: 16px;
+}
 @media (min-width: 768px) {
    
     html[dir=rtl] .navbar-nav {

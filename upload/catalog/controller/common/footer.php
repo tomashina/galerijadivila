@@ -16,8 +16,23 @@ class ControllerCommonFooter extends Controller {
 			}
 		}
 
+		$data['anchor_price_list'] = false;
+		if ($this->config->get('module_anchor_price_status')) {
+			$data['anchor_price_list'] = array(
+				'title' => (strpos((string)$this->config->get('config_language'), 'hr') === 0 ? 'Cjenici' : 'Price lists'),
+				'href'  => $this->url->link('information/price_list')
+			);
+			$data['informations'][] = $data['anchor_price_list'];
+		}
+
 		$data['contact'] = $this->url->link('information/contact');
 		$data['return'] = $this->url->link('account/return/add', '', true);
+		$data['contract_withdrawal'] = $this->url->link('extension/account/contract_withdrawal', '', true);
+		$data['text_contract_withdrawal_title'] = strpos((string)$this->config->get('config_language'), 'hr') === 0 ? 'Raskid ugovora' : 'Contract withdrawal';
+		$data['informations'][] = array(
+			'title' => $data['text_contract_withdrawal_title'],
+			'href'  => $data['contract_withdrawal']
+		);
 		$data['sitemap'] = $this->url->link('information/sitemap');
 		$data['tracking'] = $this->url->link('information/tracking');
 		$data['manufacturer'] = $this->url->link('product/manufacturer');

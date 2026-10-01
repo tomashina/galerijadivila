@@ -47,7 +47,11 @@
         <li><span class="price-old">{{ price }}</span><span class="live-price-new">{{ special }}<span></li>
         {% endif %}
       </ul>
-        
+
+        {% if anchor_price_text %}
+        <div class="anchor-price anchor-price-detail">{{ anchor_price_text|escape }}</div>
+        {% endif %}
+
         {% if discounts %}
         <p class="discount">
         {% for discount in discounts %}

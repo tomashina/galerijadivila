@@ -130,6 +130,7 @@
                   {% endif %}
                 </p>
                 {% endif %}
+                {% if product.price and product.anchor_price_text %}<div class="anchor-price anchor-price-card">{{ product.anchor_price_text|escape }}</div>{% endif %}
                 {% if product.rating %}
                 <div class="rating">
                   {% for i in 1..5 %}

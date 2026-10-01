@@ -11,6 +11,7 @@
             </td>
           <td class="main"><a class="product-name main-font" href="{{ product.href }}">{{ product.name }}</a>
             {{ product.quantity }} x <span class="price">{{ product.price }}</span>
+            {% if product.price and product.anchor_price_text %}<span class="anchor-price">{{ product.anchor_price_text|escape }}</span>{% endif %}
             {% if product.option %}
             {% for option in product.option %}
             <br />

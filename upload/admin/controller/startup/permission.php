@@ -46,6 +46,10 @@ class ControllerStartupPermission extends Controller {
 				'error/permission'
 			);
 
+			if (isset($part[0], $part[1], $part[2]) && $part[0] == 'extension' && $part[1] == 'sale' && $part[2] == 'contract_withdrawal' && ($this->user->hasPermission('access', 'extension/sale/contract_withdrawal') || $this->user->hasPermission('access', 'sale/return'))) {
+				return;
+			}
+
 			if (!in_array($route, $ignore) && !$this->user->hasPermission('access', $route)) {
 				return new Action('error/permission');
 			}

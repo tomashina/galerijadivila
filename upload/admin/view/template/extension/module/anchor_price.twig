@@ -1,0 +1,152 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <form action="{{ sync_action }}" method="post" style="display:inline-block">
+          <button type="submit" data-toggle="tooltip" title="{{ button_sync }}" class="btn btn-info"><i class="fa fa-refresh"></i> {{ button_sync }}</button>
+        </form>
+        <form action="{{ publish_action }}" method="post" style="display:inline-block">
+          <button type="submit" data-toggle="tooltip" title="{{ button_publish }}" class="btn btn-success"><i class="fa fa-file-text-o"></i> {{ button_publish }}</button>
+        </form>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning|escape }}<button type="button" class="close" data-dismiss="alert">&times;</button></div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success|escape }}<button type="button" class="close" data-dismiss="alert">&times;</button></div>
+    {% endif %}
+    {% if publication_warning %}
+    <div class="alert alert-warning"><i class="fa fa-clock-o"></i> {{ publication_warning|escape }}</div>
+    {% endif %}
+	{% if import_result.errors %}
+	<div class="alert alert-danger"><strong>{{ text_import_errors }}</strong><ul>{% for import_error in import_result.errors %}<li>{{ import_error|escape }}</li>{% endfor %}</ul></div>
+	{% endif %}
+
+    <div class="alert alert-info">
+      <i class="fa fa-info-circle"></i> {{ text_reference_rule }}
+      <span class="pull-right"><strong>{{ text_missing_count|format(missing_count) }}</strong></span>
+	    </div>
+
+	    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-cog"></i> {{ text_settings }}</h3></div>
+      <div class="panel-body">
+	        <form action="{{ settings_action }}" method="post" class="form-horizontal">
+	          <div class="form-group">
+	            <label class="col-sm-2 control-label" for="input-reference-date-setting"><span data-toggle="tooltip" title="{{ help_reference_date_setting|escape }}">{{ entry_reference_date_setting }}</span></label>
+	            <div class="col-sm-3"><input type="date" name="reference_date_setting" value="{{ reference_date_setting|escape }}" id="input-reference-date-setting" class="form-control" /></div>
+	          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-default-unit"><span data-toggle="tooltip" title="{{ help_default_unit|escape }}">{{ entry_default_unit }}</span></label>
+            <div class="col-sm-3"><input type="text" name="default_unit" value="{{ default_unit|escape }}" id="input-default-unit" maxlength="16" class="form-control" /></div>
+            <div class="col-sm-2"><button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> {{ button_settings }}</button></div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-cron-url">{{ entry_cron_url }}</label>
+            <div class="col-sm-10"><input type="text" readonly="readonly" value="{{ cron_url|escape }}" id="input-cron-url" class="form-control" /><p class="help-block">{{ text_cron_help }}</p></div>
+          </div>
+	          <div class="form-group">
+	            <label class="col-sm-2 control-label" for="input-cron-key">{{ entry_cron_key }}</label>
+	            <div class="col-sm-10"><input type="text" readonly="readonly" value="{{ cron_key|escape }}" id="input-cron-key" class="form-control" /></div>
+	          </div>
+	          <div class="form-group">
+	            <label class="col-sm-2 control-label" for="input-cron-cpanel">{{ entry_cron_cpanel }}</label>
+	            <div class="col-sm-10"><input type="text" readonly="readonly" value="{{ cron_url_with_key|escape }}" id="input-cron-cpanel" class="form-control" /><p class="help-block">{{ text_cron_cpanel_help }}</p></div>
+	          </div>
+	          <div class="form-group">
+	            <label class="col-sm-2 control-label">{{ entry_public_urls }}</label>
+	            <div class="col-sm-10"><input type="text" readonly="readonly" value="{{ public_latest_csv|escape }}" class="form-control" /><input type="text" readonly="readonly" value="{{ public_latest_xml|escape }}" class="form-control" style="margin-top:5px" /></div>
+	          </div>
+	        </form>
+		    </div>
+		  </div>
+
+		    <div class="panel panel-default">
+	      <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-upload"></i> {{ text_import }}</h3></div>
+	      <div class="panel-body">
+	        <form action="{{ import_action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+	          <div class="form-group required"><label class="col-sm-2 control-label" for="input-anchor-csv">{{ entry_import_file }}</label><div class="col-sm-7"><input type="file" name="anchor_csv" id="input-anchor-csv" accept=".csv,text/csv" class="form-control" /><p class="help-block">{{ help_import_file }}</p></div></div>
+	          <div class="form-group"><label class="col-sm-2 control-label" for="input-dry-run">{{ entry_dry_run }}</label><div class="col-sm-7"><label class="checkbox-inline"><input type="checkbox" name="dry_run" value="1" id="input-dry-run" checked="checked" /> {{ help_dry_run }}</label></div></div>
+	          <div class="form-group"><div class="col-sm-7 col-sm-offset-2"><button type="submit" class="btn btn-warning"><i class="fa fa-upload"></i> {{ button_import }}</button></div></div>
+	        </form>
+		    </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-filter"></i> {{ text_filter }}</h3></div>
+      <div class="panel-body">
+        <form action="{{ filter_action }}" method="get" class="form-horizontal">
+          <input type="hidden" name="route" value="extension/module/anchor_price" />
+          <input type="hidden" name="user_token" value="{{ user_token|escape }}" />
+          <div class="row">
+            <div class="col-sm-3"><div class="form-group"><label class="control-label" for="filter-name">{{ entry_filter_name }}</label><input type="text" name="filter_name" value="{{ filter_name|escape }}" id="filter-name" class="form-control" /></div></div>
+            <div class="col-sm-2"><div class="form-group"><label class="control-label" for="filter-model">{{ entry_filter_model }}</label><input type="text" name="filter_model" value="{{ filter_model|escape }}" id="filter-model" class="form-control" /></div></div>
+            <div class="col-sm-2"><div class="form-group"><label class="control-label" for="filter-status">{{ entry_filter_status }}</label><select name="filter_status" id="filter-status" class="form-control"><option value="">{{ text_all_statuses }}</option>{% for status_code, status_name in statuses %}<option value="{{ status_code|escape }}"{% if filter_status == status_code %} selected="selected"{% endif %}>{{ status_name|escape }}</option>{% endfor %}</select></div></div>
+            <div class="col-sm-2"><div class="form-group"><label class="control-label" for="filter-date-from">{{ entry_date_from }}</label><input type="date" name="filter_date_from" value="{{ filter_date_from|escape }}" id="filter-date-from" class="form-control" /></div></div>
+            <div class="col-sm-2"><div class="form-group"><label class="control-label" for="filter-date-to">{{ entry_date_to }}</label><input type="date" name="filter_date_to" value="{{ filter_date_to|escape }}" id="filter-date-to" class="form-control" /></div></div>
+            <div class="col-sm-1"><div class="form-group"><label class="control-label">&nbsp;</label><button type="submit" class="btn btn-primary btn-block"><i class="fa fa-search"></i></button></div></div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-anchor"></i> {{ text_list }}</h3></div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead><tr>
+              <td><a href="{{ sort_product_name }}">{{ column_product }}</a></td>
+              <td><a href="{{ sort_model }}">{{ column_model }}</a></td>
+              <td class="text-right"><a href="{{ sort_price }}">{{ column_net_price }}</a></td>
+              <td class="text-right"><a href="{{ sort_gross_price }}">{{ column_gross_price }}</a></td>
+              <td><a href="{{ sort_reference_date }}">{{ column_reference_date }}</a></td>
+              <td><a href="{{ sort_verification_status }}">{{ column_status }}</a></td>
+              <td class="text-right">{{ column_action }}</td>
+            </tr></thead>
+            <tbody>
+              {% if anchors %}
+              {% for anchor in anchors %}
+              <tr>
+                <td>{{ anchor.product_name|escape }}<br /><small class="text-muted">ID {{ anchor.product_id }}{% if anchor.manufacturer %} · {{ anchor.manufacturer|escape }}{% endif %}</small></td>
+                <td>{{ anchor.model|escape }}{% if anchor.sku %}<br /><small class="text-muted">{{ anchor.sku|escape }}</small>{% endif %}</td>
+                <td class="text-right">{{ anchor.price|escape }} {{ anchor.currency_code|escape }}</td>
+                <td class="text-right"><strong>{{ anchor.gross_price|escape }} {{ anchor.currency_code|escape }}</strong></td>
+                <td>{{ anchor.reference_date|escape }}</td>
+                <td>{% if anchor.verification_status == 'confirmed' %}{% set status_class = 'label-success' %}{% elseif anchor.verification_status == 'pending' %}{% set status_class = 'label-warning' %}{% else %}{% set status_class = 'label-default' %}{% endif %}<span class="label {{ status_class }}">{{ anchor.status_text|escape }}</span></td>
+                <td class="text-right"><a href="{{ anchor.edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <tr><td class="text-center" colspan="7">{{ text_no_results }}</td></tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+        <div class="row"><div class="col-sm-6 text-left">{{ pagination }}</div><div class="col-sm-6 text-right">{{ results }}</div></div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-archive"></i> {{ text_publications }}</h3></div>
+      <div class="panel-body"><div class="table-responsive"><table class="table table-bordered table-hover">
+	        <thead><tr><td>{{ column_sequence }}</td><td>{{ column_filename }}</td><td>{{ column_status }}</td><td class="text-right">{{ column_products }}</td><td>{{ column_published }}</td><td class="text-right">{{ column_action }}</td></tr></thead>
+	        <tbody>{% if publications %}{% for publication in publications %}<tr>
+		          <td>{{ publication.sequence_no }}</td><td>{{ publication.filename|escape }}{% if publication.xml_filename %}<br>{{ publication.xml_filename|escape }}{% endif %}</td><td>{{ publication.status|escape }}</td><td class="text-right">{{ publication.product_count }}</td><td>{{ publication.published_at|escape }}</td><td class="text-right">{% if publication.download_csv %}<a href="{{ publication.download_csv }}" title="CSV" class="btn btn-primary btn-sm">CSV</a> <a href="{{ publication.download_xml }}" title="XML" class="btn btn-default btn-sm">XML</a>{% endif %}</td>
+	        </tr>{% endfor %}{% else %}<tr><td colspan="6" class="text-center">{{ text_no_results }}</td></tr>{% endif %}</tbody>
+      </table></div></div>
+    </div>
+  </div>
+</div>
+{{ footer }}

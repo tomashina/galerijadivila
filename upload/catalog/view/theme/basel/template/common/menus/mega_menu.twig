@@ -144,6 +144,9 @@ background-position:{{ row.position }};
 {% endif %}
 <a class="btn btn-outline btn-tiny catalog_hide" onclick="cart.add('{{ submenu.product.id }}', '{{ submenu.product.minimum }}');"><span class="global-cart"></span>{{ button_cart }}</a>
 </div>
+{% if submenu.product.price and submenu.product.anchor_price_text %}
+<div class="anchor-price anchor-price-card">{{ submenu.product.anchor_price_text|escape }}</div>
+{% endif %}
 </div>
 {% if submenu.product.sale_end_date and countdown_status %}
 <script>

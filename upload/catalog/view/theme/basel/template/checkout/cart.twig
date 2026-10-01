@@ -85,7 +85,8 @@
                   <span class="label label-info">{{ text_recurring_item }}</span> <small>{{ product.recurring }}</small>
                   {% endif %}
                   <small class="hidden-md hidden-lg"><br />{{ column_model }}: {{ product.model }}</small>
-                  <small class="hidden-md hidden-lg"><br />{{ column_price }}: {{ product.price }}</small><br />
+				  <small class="hidden-md hidden-lg"><br />{{ column_price }}: {{ product.price }}</small><br />
+				  {% if product.price and product.anchor_price_text %}<span class="anchor-price hidden-md hidden-lg">{{ product.anchor_price_text|escape }}</span>{% endif %}
 				  <a class="btn btn-default btn-tiny hidden-md hidden-lg" style="margin-top:5px;" onclick="cart.remove('{{ product.cart_id }}');">{{ button_remove }}</a>
                   </td>
               
@@ -103,7 +104,9 @@
 
 
                                 </script>
-                <td class="text-right price-cell hidden-xs hidden-sm">{{ product.price }}</td>
+                <td class="text-right price-cell hidden-xs hidden-sm">{{ product.price }}
+                  {% if product.price and product.anchor_price_text %}<span class="anchor-price">{{ product.anchor_price_text|escape }}</span>{% endif %}
+                </td>
                 <td class="text-right total-cell">{{ product.total }}</td>
               </tr>
               {% endfor %}
@@ -170,4 +173,4 @@
       {{ content_bottom }}</div>
     {{ column_right }}</div>
 </div>
-{{ footer }} 
+{{ footer }}

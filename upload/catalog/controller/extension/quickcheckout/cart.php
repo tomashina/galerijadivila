@@ -149,6 +149,7 @@ class ControllerExtensionQuickCheckoutCart extends Controller {
 
 			$data['products'][] = array(
 				'key'        => isset($product['key']) ? $product['key'] : $product['cart_id'],
+				'product_id' => $product['product_id'],
 				'thumb'     => $image,
 				'name'      => $product['name'],
 				'model'     => $product['model'],

@@ -19,6 +19,14 @@ class ControllerCommonColumnLeft extends Controller {
 			// Catalog
 			$catalog = array();
 
+			if ($this->user->hasPermission('access', 'extension/module/anchor_price')) {
+				$catalog[] = array(
+					'name'     => 'Sidrene cijene',
+					'href'     => $this->url->link('extension/module/anchor_price', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+
 			if ($this->user->hasPermission('access', 'catalog/category')) {
 				$catalog[] = array(
 					'name'	   => $this->language->get('text_category'),
@@ -257,6 +265,14 @@ class ControllerCommonColumnLeft extends Controller {
 				$sale[] = array(
 					'name'	   => $this->language->get('text_return'),
 					'href'     => $this->url->link('sale/return', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+
+			if ($this->user->hasPermission('access', 'extension/sale/contract_withdrawal') || $this->user->hasPermission('access', 'sale/return')) {
+				$sale[] = array(
+					'name'	   => 'Raskidi ugovora',
+					'href'     => $this->url->link('extension/sale/contract_withdrawal', 'user_token=' . $this->session->data['user_token'], true),
 					'children' => array()
 				);
 			}

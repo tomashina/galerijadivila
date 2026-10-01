@@ -60,6 +60,7 @@ class ControllerAccountOrder extends Controller {
 				'products'   => ($product_total + $voucher_total),
 				'total'      => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
 				'view'       => $this->url->link('account/order/info', 'order_id=' . $result['order_id'], true),
+				'contract_withdrawal' => $this->url->link('extension/account/contract_withdrawal', 'order_id=' . $result['order_id'], true),
 			);
 		}
 
@@ -158,6 +159,7 @@ class ControllerAccountOrder extends Controller {
 			}
 
 			$data['order_id'] = (int)$this->request->get['order_id'];
+			$data['contract_withdrawal'] = $this->url->link('extension/account/contract_withdrawal', 'order_id=' . (int)$this->request->get['order_id'], true);
 			$data['date_added'] = date($this->language->get('date_format_short'), strtotime($order_info['date_added']));
 
 			if ($order_info['payment_address_format']) {

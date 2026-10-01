@@ -1,0 +1,75 @@
+.contract-withdrawal-footer-bar {
+	background: rgba(0, 0, 0, 0.025);
+	border-top: 1px solid;
+  color: #333;
+  padding: 16px 0;
+}
+
+.contract-withdrawal-footer-bar .contract-withdrawal-footer-title {
+  display: block;
+  font-size: 16px;
+  line-height: 20px;
+  margin-bottom: 3px;
+}
+
+.contract-withdrawal-footer-bar .contract-withdrawal-footer-copy {
+  color: #666;
+  line-height: 20px;
+}
+
+.contract-withdrawal-footer-bar .contract-withdrawal-footer-action {
+  padding-top: 2px;
+}
+
+.contract-withdrawal-page .contract-withdrawal-honeypot {
+  height: 1px !important;
+  left: -10000px !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  top: auto !important;
+  width: 1px !important;
+}
+
+.contract-withdrawal-page .contract-withdrawal-statement {
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 0;
+  color: #333;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  padding: 15px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.contract-withdrawal-page .contract-withdrawal-preserve-lines {
+  white-space: pre-line;
+}
+
+.contract-withdrawal-page .contract-withdrawal-products {
+  margin-bottom: 20px;
+}
+
+.contract-withdrawal-page .contract-withdrawal-legal {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 767px) {
+  .contract-withdrawal-footer-bar,
+  .contract-withdrawal-footer-bar .contract-withdrawal-footer-action {
+    text-align: center;
+  }
+
+  .contract-withdrawal-footer-bar .contract-withdrawal-footer-action {
+    margin-top: 12px;
+  }
+
+  .contract-withdrawal-page .buttons .btn {
+    display: block;
+    float: none !important;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+}

@@ -116,6 +116,10 @@
 
 </div>
 
+{% if product.price and product.anchor_price_text %}
+<div class="anchor-price anchor-price-card">{{ product.anchor_price_text|escape }}</div>
+{% endif %}
+
 
 <div class="plain-links">
 <a class="icon is_wishlist link-hover-color" onclick="wishlist.add('{{ product.product_id }}');" title="{{ button_wishlist }}"><span class="icon-heart"></span> {{ button_wishlist }}</a>

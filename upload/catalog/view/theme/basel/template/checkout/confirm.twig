@@ -25,7 +25,9 @@
           {% endif %}</td>
         <td class="text-left hidden-xs hidden-sm">{{ product.model }}</td>
         <td class="text-right hidden-xs hidden-sm">{{ product.quantity }}</td>
-        <td class="text-right hidden-xs hidden-sm">{{ product.price }}</td>
+        <td class="text-right hidden-xs hidden-sm">{{ product.price }}
+          {% if product.price and product.anchor_price_text %}<span class="anchor-price">{{ product.anchor_price_text|escape }}</span>{% endif %}
+        </td>
         <td class="text-right">{{ product.total }}</td>
       </tr>
       {% endfor %}

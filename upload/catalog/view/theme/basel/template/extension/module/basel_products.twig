@@ -148,6 +148,9 @@
 
 
             </div><!-- .price-wrapper -->
+            {% if product.price and product.anchor_price_text %}
+            <div class="anchor-price anchor-price-card">{{ product.anchor_price_text|escape }}</div>
+            {% endif %}
 
              
 

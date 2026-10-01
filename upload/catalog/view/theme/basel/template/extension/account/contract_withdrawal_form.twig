@@ -1,0 +1,400 @@
+{{ header }}
+<div id="account-contract-withdrawal" class="container contract-withdrawal-page">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href|e }}">{{ breadcrumb.text|e }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+    {% set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-md-9 col-sm-8' %}
+    {% else %}
+    {% set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+      <h1 id="page-title">{{ heading_title|e }}</h1>
+
+      {% if errors.warning %}
+      <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ errors.warning|e }}</div>
+      {% endif %}
+
+      {% if preview %}
+      <p class="margin-b20">{{ text_preview_help|e }}</p>
+      <div class="panel panel-default contract-withdrawal-preview">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-file-text-o"></i> {{ text_preview|e }}</h3>
+        </div>
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td><b>{{ entry_order_id|e }}</b></td>
+                  <td>#{{ form.order_id|e }}</td>
+                </tr>
+                <tr>
+                  <td><b>{{ entry_firstname|e }} / {{ entry_lastname|e }}</b></td>
+                  <td>{{ form.firstname|e }} {{ form.lastname|e }}</td>
+                </tr>
+                <tr>
+                  <td><b>{{ entry_email|e }}</b></td>
+                  <td>{{ form.email|e }}</td>
+                </tr>
+                {% if form.telephone %}
+                <tr>
+                  <td><b>{{ entry_telephone|e }}</b></td>
+                  <td>{{ form.telephone|e }}</td>
+                </tr>
+                {% endif %}
+                {% if form.address %}
+                <tr>
+                  <td><b>{{ entry_address|e }}</b></td>
+                  <td><span class="contract-withdrawal-preserve-lines">{{ form.address|e }}</span></td>
+                </tr>
+                {% endif %}
+                {% if form.refund_iban %}
+                <tr>
+                  <td><b>{{ entry_refund_iban|e }}</b></td>
+                  <td>{{ form.refund_iban|e }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                  <td><b>{{ entry_scope|e }}</b></td>
+                  <td>{% if form.withdrawal_scope == 'items' %}{{ text_selected_items|e }}{% else %}{{ text_full_order|e }}{% endif %}</td>
+                </tr>
+                {% if form.comment %}
+                <tr>
+                  <td><b>{{ entry_comment|e }}</b></td>
+                  <td><span class="contract-withdrawal-preserve-lines">{{ form.comment|e }}</span></td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+
+          <h3>{{ text_statement|e }}</h3>
+          <pre class="contract-withdrawal-statement">{{ statement|e }}</pre>
+
+          <form action="{{ action|e }}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token|e }}" />
+            <input type="hidden" name="order_id" value="{{ form.order_id|e }}" />
+            <input type="hidden" name="firstname" value="{{ form.firstname|e }}" />
+            <input type="hidden" name="lastname" value="{{ form.lastname|e }}" />
+            <input type="hidden" name="email" value="{{ form.email|e }}" />
+            <input type="hidden" name="telephone" value="{{ form.telephone|e }}" />
+            <input type="hidden" name="address" value="{{ form.address|e }}" />
+            <input type="hidden" name="refund_iban" value="{{ form.refund_iban|e }}" />
+            <input type="hidden" name="withdrawal_scope" value="{{ form.withdrawal_scope|e }}" />
+            <input type="hidden" name="comment" value="{{ form.comment|e }}" />
+            {% for order_product_id in form.order_products %}
+            <input type="hidden" name="order_products[]" value="{{ order_product_id|e }}" />
+            {% endfor %}
+            <p class="help-block contract-withdrawal-legal">{{ text_confirm_legal|e }}</p>
+            <p class="help-block contract-withdrawal-privacy">{{ text_privacy_note|e }}</p>
+            <div class="buttons clearfix">
+              <button type="button" onclick="window.history.back();" class="btn btn-default pull-left"><i class="fa fa-pencil"></i> {{ button_edit|e }}</button>
+              <button type="submit" name="confirm" value="1" class="btn btn-primary pull-right"><i class="fa fa-check"></i> {{ button_confirm|e }}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      {% else %}
+      <p class="margin-b20">{{ text_intro|e }}</p>
+      <p class="help-block">{{ text_required_note|e }}</p>
+
+      <form action="{{ action|e }}" method="post" class="form-horizontal" id="form-contract-withdrawal" data-products-url="{{ products_url|e }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token|e }}" />
+        <input type="text" name="website" value="" tabindex="-1" autocomplete="off" class="contract-withdrawal-honeypot" aria-hidden="true" />
+
+        <fieldset class="margin-b30">
+          <legend>{{ text_order|e }}</legend>
+          <div class="form-group required">
+            <label for="input-order-id" class="col-sm-3 control-label">{{ entry_order_id|e }}</label>
+            <div class="col-sm-9">
+              <input type="text" name="order_id" value="{{ form.order_id|e }}" id="input-order-id" class="form-control" inputmode="numeric" pattern="[0-9]*" maxlength="10" required="required" />
+              {% if errors.order_id %}<div class="text-danger">{{ errors.order_id|e }}</div>{% endif %}
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="margin-b30">
+          <legend>{{ text_customer|e }}</legend>
+          <div class="form-group required">
+            <label for="input-firstname" class="col-sm-3 control-label">{{ entry_firstname|e }}</label>
+            <div class="col-sm-9">
+              <input type="text" name="firstname" value="{{ form.firstname|e }}" id="input-firstname" class="form-control" maxlength="64" autocomplete="given-name" required="required" />
+              {% if errors.firstname %}<div class="text-danger">{{ errors.firstname|e }}</div>{% endif %}
+            </div>
+          </div>
+          <div class="form-group required">
+            <label for="input-lastname" class="col-sm-3 control-label">{{ entry_lastname|e }}</label>
+            <div class="col-sm-9">
+              <input type="text" name="lastname" value="{{ form.lastname|e }}" id="input-lastname" class="form-control" maxlength="64" autocomplete="family-name" required="required" />
+              {% if errors.lastname %}<div class="text-danger">{{ errors.lastname|e }}</div>{% endif %}
+            </div>
+          </div>
+          <div class="form-group required">
+            <label for="input-email" class="col-sm-3 control-label">{{ entry_email|e }}</label>
+            <div class="col-sm-9">
+              <input type="email" name="email" value="{{ form.email|e }}" id="input-email" class="form-control" maxlength="96" autocomplete="email" required="required" />
+              {% if errors.email %}<div class="text-danger">{{ errors.email|e }}</div>{% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input-telephone" class="col-sm-3 control-label">{{ entry_telephone|e }}</label>
+            <div class="col-sm-9">
+              <input type="text" name="telephone" value="{{ form.telephone|e }}" id="input-telephone" class="form-control" maxlength="32" autocomplete="tel" />
+              {% if errors.telephone %}<div class="text-danger">{{ errors.telephone|e }}</div>{% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input-address" class="col-sm-3 control-label">{{ entry_address|e }}</label>
+            <div class="col-sm-9">
+              <textarea name="address" rows="3" id="input-address" class="form-control" maxlength="1000" autocomplete="street-address">{{ form.address|e }}</textarea>
+              {% if errors.address %}<div class="text-danger">{{ errors.address|e }}</div>{% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input-refund-iban" class="col-sm-3 control-label">{{ entry_refund_iban|e }}</label>
+            <div class="col-sm-9">
+              <input type="text" name="refund_iban" value="{{ form.refund_iban|e }}" id="input-refund-iban" class="form-control" maxlength="34" autocomplete="off" />
+              {% if errors.refund_iban %}<div class="text-danger">{{ errors.refund_iban|e }}</div>{% endif %}
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="margin-b30">
+          <legend>{{ text_products|e }}</legend>
+          <div class="form-group">
+            <label class="col-sm-3 control-label">{{ entry_scope|e }}</label>
+            <div class="col-sm-9">
+              <div class="radio">
+                <label><input type="radio" name="withdrawal_scope" value="full" id="input-withdrawal-scope-full" {% if form.withdrawal_scope != 'items' %}checked="checked"{% endif %} /> {{ text_full_order|e }}</label>
+              </div>
+              <div class="radio">
+                <label><input type="radio" name="withdrawal_scope" value="items" id="input-withdrawal-scope-items" {% if form.withdrawal_scope == 'items' %}checked="checked"{% endif %} {% if not order_products %}disabled="disabled"{% endif %} /> {{ text_selected_items|e }}</label>
+              </div>
+              <p class="help-block">{{ text_load_products_help|e }}</p>
+              <button type="button" id="button-load-order-products" class="btn btn-primary" data-loading-text="{{ text_loading_products|e }}"><i class="fa fa-refresh"></i> {{ button_load_products|e }}</button>
+              <noscript>
+                <p class="help-block">{{ text_products_no_js|e }}</p>
+                <button type="submit" name="load_products" value="1" class="btn btn-primary"><i class="fa fa-refresh"></i> {{ button_load_products|e }}</button>
+              </noscript>
+              {% if errors.scope %}<div class="text-danger">{{ errors.scope|e }}</div>{% endif %}
+            </div>
+          </div>
+
+          <div id="contract-withdrawal-products-result" aria-live="polite">
+          {% if order_products %}
+          <div class="table-responsive contract-withdrawal-products">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <td style="width: 40px;"></td>
+                  <td>{{ text_products|e }}</td>
+                  <td>{{ text_product_model|e }}</td>
+                  <td class="text-right">{{ text_product_quantity|e }}</td>
+                </tr>
+              </thead>
+              <tbody>
+                {% for product in order_products %}
+                <tr>
+                  <td><input type="checkbox" name="order_products[]" value="{{ product.order_product_id|e }}" {% if product.order_product_id in form.order_products %}checked="checked"{% endif %} /></td>
+                  <td>{{ product.name|e }}</td>
+                  <td>{{ product.model|e }}</td>
+                  <td class="text-right">{{ product.quantity|e }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+          <p class="help-block">{{ text_no_products|e }}</p>
+          {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="input-comment" class="col-sm-3 control-label">{{ entry_comment|e }}</label>
+            <div class="col-sm-9">
+              <textarea name="comment" rows="5" id="input-comment" class="form-control" maxlength="5000">{{ form.comment|e }}</textarea>
+              {% if errors.comment %}<div class="text-danger">{{ errors.comment|e }}</div>{% endif %}
+            </div>
+          </div>
+        </fieldset>
+
+        {{ captcha }}
+
+        <p class="help-block contract-withdrawal-privacy">{{ text_privacy_note|e }}</p>
+
+        <div class="buttons clearfix margin-b30">
+          <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-search"></i> {{ button_preview|e }}</button>
+        </div>
+      </form>
+      {% endif %}
+
+      {{ content_bottom }}
+    </div>
+    {{ column_right }}
+  </div>
+</div>
+<script>
+(function () {
+  'use strict';
+
+  var form = document.getElementById('form-contract-withdrawal');
+
+  if (!form) {
+    return;
+  }
+
+  var button = document.getElementById('button-load-order-products');
+  var orderInput = document.getElementById('input-order-id');
+  var emailInput = document.getElementById('input-email');
+  var fullRadio = document.getElementById('input-withdrawal-scope-full');
+  var itemsRadio = document.getElementById('input-withdrawal-scope-items');
+  var result = document.getElementById('contract-withdrawal-products-result');
+  var csrfInput = form.querySelector('input[name="csrf_token"]');
+  var productsLoaded = !!result.querySelector('table');
+  var buttonContent = button.textContent;
+
+  function clearNode(node) {
+    while (node.firstChild) {
+      node.removeChild(node.firstChild);
+    }
+  }
+
+  function appendMessage(message, className) {
+    var paragraph = document.createElement('p');
+    paragraph.className = className;
+    paragraph.textContent = message;
+    result.appendChild(paragraph);
+  }
+
+  function invalidateProducts() {
+    if (!productsLoaded) {
+      return;
+    }
+
+    productsLoaded = false;
+    itemsRadio.disabled = true;
+    itemsRadio.checked = false;
+    fullRadio.checked = true;
+    clearNode(result);
+    appendMessage({{ text_no_products|json_encode|raw }}, 'help-block');
+  }
+
+  function appendCell(row, text, className) {
+    var cell = document.createElement('td');
+
+    if (className) {
+      cell.className = className;
+    }
+
+    cell.textContent = text;
+    row.appendChild(cell);
+    return cell;
+  }
+
+  function renderProducts(products, message) {
+    var wrapper = document.createElement('div');
+    var table = document.createElement('table');
+    var head = document.createElement('thead');
+    var body = document.createElement('tbody');
+    var headRow = document.createElement('tr');
+    var emptyHeading = document.createElement('td');
+
+    clearNode(result);
+    appendMessage(message, 'text-success');
+
+    wrapper.className = 'table-responsive contract-withdrawal-products';
+    table.className = 'table table-bordered table-hover';
+    emptyHeading.style.width = '40px';
+    headRow.appendChild(emptyHeading);
+    appendCell(headRow, {{ text_products|json_encode|raw }});
+    appendCell(headRow, {{ text_product_model|json_encode|raw }});
+    appendCell(headRow, {{ text_product_quantity|json_encode|raw }}, 'text-right');
+    head.appendChild(headRow);
+
+    products.forEach(function (product) {
+      var row = document.createElement('tr');
+      var checkboxCell = document.createElement('td');
+      var checkbox = document.createElement('input');
+
+      checkbox.type = 'checkbox';
+      checkbox.name = 'order_products[]';
+      checkbox.value = String(product.order_product_id);
+      checkboxCell.appendChild(checkbox);
+      row.appendChild(checkboxCell);
+      appendCell(row, String(product.name));
+      appendCell(row, String(product.model));
+      appendCell(row, String(product.quantity), 'text-right');
+      body.appendChild(row);
+    });
+
+    table.appendChild(head);
+    table.appendChild(body);
+    wrapper.appendChild(table);
+    result.appendChild(wrapper);
+
+    productsLoaded = true;
+    itemsRadio.disabled = false;
+    itemsRadio.checked = true;
+    fullRadio.checked = false;
+  }
+
+  function finishLoading() {
+    button.disabled = false;
+    button.textContent = buttonContent;
+  }
+
+  orderInput.addEventListener('input', invalidateProducts);
+  emailInput.addEventListener('input', invalidateProducts);
+
+  button.addEventListener('click', function () {
+    var xhr = new XMLHttpRequest();
+    var body = 'csrf_token=' + encodeURIComponent(csrfInput.value)
+      + '&order_id=' + encodeURIComponent(orderInput.value)
+      + '&email=' + encodeURIComponent(emailInput.value);
+
+    button.disabled = true;
+    button.textContent = button.getAttribute('data-loading-text');
+
+    xhr.open('POST', form.getAttribute('data-products-url'), true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+    xhr.onreadystatechange = function () {
+      var response;
+
+      if (xhr.readyState !== 4) {
+        return;
+      }
+
+      finishLoading();
+
+      try {
+        response = JSON.parse(xhr.responseText);
+      } catch (error) {
+        response = null;
+      }
+
+      if (!response || response.success !== true || !Array.isArray(response.products) || response.products.length === 0) {
+        productsLoaded = false;
+        itemsRadio.disabled = true;
+        itemsRadio.checked = false;
+        fullRadio.checked = true;
+        clearNode(result);
+        appendMessage(response && response.message ? String(response.message) : {{ error_order_lookup|json_encode|raw }}, 'text-danger');
+        return;
+      }
+
+      renderProducts(response.products, String(response.message));
+    };
+
+    xhr.send(body);
+  });
+}());
+</script>
+{{ footer }}

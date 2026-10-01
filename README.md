@@ -42,3 +42,13 @@ environment variables:
 - `OPENCART_DB_DATABASE`
 
 The source snapshot was prepared from the production server on 2026-10-01.
+
+## Compliance modules
+
+This repository also contains the Galerija Divila OpenCart 3.0.3.8 implementation for:
+
+- configurable anchor/reference prices with audited CSV import and responsive storefront display;
+- daily atomic CSV/XML digital price-list publication with checksums and a 30-day archive;
+- a two-step unilateral contract-withdrawal form with customer/admin notifications, admin records, GDPR notice and anti-spam controls.
+
+Deployment and activation details are in [Sidrene cijene i digitalni cjenik](docs/sidrene_cijene_i_digitalni_cjenik.md) and [Jednostrani raskid ugovora](docs/raskid_ugovora.md).

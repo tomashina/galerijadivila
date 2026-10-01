@@ -56,6 +56,9 @@
               {% endif %}
               </span>
               {% endif %}
+              {% if product.price and product.anchor_price_text %}
+              <span class="anchor-price anchor-price-compare">{{ product.anchor_price_text|escape }}</span>
+              {% endif %}
               
               <input type="button" value="{{ button_cart }}" class="btn btn-primary btn-sm catalog_hide" onclick="cart.add('{{ product.product_id }}', '{{ product.minimum }}');" />
               

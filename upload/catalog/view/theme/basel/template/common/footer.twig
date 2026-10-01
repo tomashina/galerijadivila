@@ -47,6 +47,14 @@
 
     </div>
     {% endfor %}
+    <div class="footer-column col-xs-12">
+      <ul class="list-unstyled">
+        {% if anchor_price_list %}
+        <li><a href="{{ anchor_price_list.href }}">{{ anchor_price_list.title }}</a></li>
+        {% endif %}
+        <li><a href="{{ contract_withdrawal }}">{{ text_contract_withdrawal_title }}</a></li>
+      </ul>
+    </div>
   {% else %}
       {% if informations %}
       <div class="footer-column col-xs-12 col-sm-4 eq_height">

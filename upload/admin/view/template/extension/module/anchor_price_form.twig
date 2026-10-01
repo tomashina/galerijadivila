@@ -1,0 +1,28 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header"><div class="container-fluid">
+    <div class="pull-right"><button type="submit" form="form-anchor-price" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button><a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+    <h1>{{ heading_title }}</h1><ul class="breadcrumb">{% for breadcrumb in breadcrumbs %}<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>{% endfor %}</ul>
+  </div></div>
+  <div class="container-fluid">
+    {% if error_warning %}<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning|escape }}<button type="button" class="close" data-dismiss="alert">&times;</button></div>{% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }} — {{ anchor.product_name|escape }}</h3></div>
+      <div class="panel-body">
+        <div class="alert alert-info"><strong>ID {{ anchor.product_id }}</strong> · {{ anchor.model|escape }} · {{ anchor.currency_code|escape }}<br /><small>{{ anchor.rule_code|escape }} / {{ anchor.source|escape }}</small></div>
+        <form action="{{ action }}" method="post" id="form-anchor-price" class="form-horizontal">
+          <div class="form-group required"><label class="col-sm-2 control-label" for="input-price">{{ entry_price }}</label><div class="col-sm-10"><div class="input-group"><input type="text" name="price" value="{{ price|escape }}" id="input-price" class="form-control" /><span class="input-group-addon">{{ anchor.currency_code|escape }}</span></div>{% if error_price %}<div class="text-danger">{{ error_price|escape }}</div>{% endif %}</div></div>
+          <div class="form-group required"><label class="col-sm-2 control-label" for="input-gross-price"><span data-toggle="tooltip" title="{{ help_gross_price|escape }}">{{ entry_gross_price }}</span></label><div class="col-sm-10"><div class="input-group"><input type="text" name="gross_price" value="{{ gross_price|escape }}" id="input-gross-price" class="form-control" /><span class="input-group-addon">{{ anchor.currency_code|escape }}</span></div>{% if error_gross_price %}<div class="text-danger">{{ error_gross_price|escape }}</div>{% endif %}</div></div>
+          <div class="form-group required"><label class="col-sm-2 control-label" for="input-reference-date">{{ entry_reference_date }}</label><div class="col-sm-10"><input type="date" name="reference_date" value="{{ reference_date|escape }}" id="input-reference-date" class="form-control" />{% if error_reference_date %}<div class="text-danger">{{ error_reference_date|escape }}</div>{% endif %}</div></div>
+          <div class="form-group required"><label class="col-sm-2 control-label" for="input-status">{{ entry_verification_status }}</label><div class="col-sm-10"><select name="verification_status" id="input-status" class="form-control">{% for status_code, status_name in statuses %}<option value="{{ status_code|escape }}"{% if verification_status == status_code %} selected="selected"{% endif %}>{{ status_name|escape }}</option>{% endfor %}</select>{% if error_status %}<div class="text-danger">{{ error_status|escape }}</div>{% endif %}</div></div>
+          <div class="form-group required"><label class="col-sm-2 control-label" for="input-reason"><span data-toggle="tooltip" title="{{ help_reason|escape }}">{{ entry_reason }}</span></label><div class="col-sm-10"><textarea name="reason" rows="3" maxlength="255" id="input-reason" class="form-control">{{ reason|escape }}</textarea>{% if error_reason %}<div class="text-danger">{{ error_reason|escape }}</div>{% endif %}</div></div>
+        </form>
+      </div>
+    </div>
+    <div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title"><i class="fa fa-history"></i> {{ text_audit }}</h3></div><div class="panel-body"><div class="table-responsive"><table class="table table-bordered table-hover">
+      <thead><tr><td>{{ column_date_added }}</td><td>{{ column_user }}</td><td>{{ column_action }}</td><td>{{ column_reason }}</td><td>{{ column_before }}</td><td>{{ column_after }}</td></tr></thead>
+      <tbody>{% if audits %}{% for audit in audits %}<tr><td>{{ audit.date_added|escape }}</td><td>{{ audit.username|escape }}</td><td>{{ audit.action|escape }}</td><td>{{ audit.reason|escape }}</td><td><small>{{ audit.old_summary|escape }}</small></td><td><small>{{ audit.new_summary|escape }}</small></td></tr>{% endfor %}{% else %}<tr><td colspan="6" class="text-center">{{ text_no_results }}</td></tr>{% endif %}</tbody>
+    </table></div></div></div>
+  </div>
+</div>
+{{ footer }}
